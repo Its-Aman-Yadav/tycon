@@ -252,7 +252,7 @@ export function TeachersList() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Teacher</TableHead>
+                <TableHead>Instructors</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Subject Expertise</TableHead>
                 <TableHead>Type</TableHead>

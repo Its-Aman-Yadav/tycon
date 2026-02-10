@@ -349,7 +349,7 @@ export default function Home() {
         <section className="w-full py-20 bg-gray-50 overflow-hidden">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tight text-center mb-10">
-              What Our Students Say
+              What Our Employees Say
             </h2>
 
             <div className="relative w-full overflow-hidden">

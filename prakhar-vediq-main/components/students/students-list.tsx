@@ -400,7 +400,7 @@ export function StudentsList() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Student</TableHead>
+              <TableHead>Employee</TableHead>
               <TableHead>Contact</TableHead>
               <TableHead>Joined</TableHead>
               <TableHead>Status</TableHead>
