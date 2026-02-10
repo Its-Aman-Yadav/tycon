@@ -1136,7 +1136,7 @@ export function CourseCreationForm({
                   </PopoverTrigger>
                   <PopoverContent className="w-[400px] p-0">
                     <Command>
-                      <CommandInput placeholder="Search teachers..." />
+                      <CommandInput placeholder="Search instructors..." />
                       <CommandList>
                         <CommandEmpty>No teacher found.</CommandEmpty>
                         <CommandGroup>

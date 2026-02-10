@@ -14,7 +14,7 @@ export default function TeachersPage() {
 
   return (
     <AdminLayout>
-      <PageHeader title="All Teachers" addNewHref="/dashboard/admin/teachers/onboard" addNewText="Add Instructor" />
+      <PageHeader title="All Instructors" addNewHref="/dashboard/admin/teachers/onboard" addNewText="Add Instructor" />
       <TeachersList />
     </AdminLayout>
   )

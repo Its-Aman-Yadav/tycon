@@ -331,7 +331,7 @@ export function StudentsList() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
             <Input
               type="search"
-              placeholder="Search students..."
+              placeholder="Search employees..."
               className="w-full pl-9"
               value={searchTerm}
               onChange={handleSearchChange}

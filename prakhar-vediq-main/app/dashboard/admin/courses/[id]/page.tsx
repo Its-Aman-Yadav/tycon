@@ -639,7 +639,7 @@ export default function CourseDetailPage() {
 
                               <TabsContent value="manual" className="space-y-4 mt-4">
                                 <div className="space-y-2">
-                                  <Label htmlFor="search-students">Search Students</Label>
+                                  <Label htmlFor="search-students">Search Employee</Label>
                                   <Input
                                     id="search-students"
                                     placeholder="Search by name or email..."

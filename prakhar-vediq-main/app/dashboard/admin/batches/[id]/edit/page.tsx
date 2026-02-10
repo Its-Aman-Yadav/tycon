@@ -775,11 +775,11 @@ export default function EditBatchPage() {
           {currentStep === "teachers" && (
             <Card className="mx-auto max-w-3xl p-6">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold">Assign Teachers</h2>
+                <h2 className="text-2xl font-bold">Assign Instructor</h2>
                 <p className="text-gray-600">Update teachers who will be responsible for this batch</p>
               </div>
               <div className="mb-4">
-                <Label htmlFor="teacherSearch">Search Teachers</Label>
+                <Label htmlFor="teacherSearch">Search Instructor</Label>
                 <div className="relative">
                   <Input id="teacherSearch" placeholder="Search by name..." className="pl-10" />
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -898,7 +898,7 @@ export default function EditBatchPage() {
                 <div className="space-y-4">
                   <div className="font-medium">Manual Selection</div>
                   <div className="relative">
-                    <Input placeholder="Search students..." className="pl-10" />
+                    <Input placeholder="Search employees..." className="pl-10" />
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3">
                       <svg
                         className="h-5 w-5 text-gray-400"

@@ -860,12 +860,12 @@ export default function CreateBatchPage() {
           {currentStep === "teachers" && (
             <Card className="mx-auto max-w-3xl p-6">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold">Assign Teachers</h2>
+                <h2 className="text-2xl font-bold">Assign Instructor</h2>
                 <p className="text-gray-600">Select teachers who will be responsible for this batch</p>
               </div>
 
               <div className="mb-4">
-                <Label htmlFor="teacherSearch">Search Teachers</Label>
+                <Label htmlFor="teacherSearch">Search Instructor</Label>
                 <div className="relative">
                   <Input id="teacherSearch" placeholder="Search by name..." className="pl-10" />
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3">

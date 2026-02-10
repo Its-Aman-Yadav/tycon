@@ -260,7 +260,7 @@ export default function TeacherTable() {
           <form onSubmit={handleSearch} className="flex">
             <input
               type="text"
-              placeholder="Search teachers..."
+              placeholder="Search intructors..."
               className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
