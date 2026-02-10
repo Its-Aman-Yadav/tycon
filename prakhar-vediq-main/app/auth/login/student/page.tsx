@@ -190,29 +190,6 @@ export default function RoleBasedLoginPage() {
                                 </FormItem>
                             )}
                         />
-
-                        <div className="flex items-center justify-between">
-                            <FormField
-                                control={form.control}
-                                name="rememberMe"
-                                render={({ field }) => (
-                                    <div className="flex items-center space-x-2">
-                                        <Checkbox id="remember" checked={field.value} onCheckedChange={field.onChange} />
-                                        <label htmlFor="remember" className="text-sm font-medium leading-none">
-                                            Remember me
-                                        </label>
-                                    </div>
-                                )}
-                            />
-
-                            <div
-                                onClick={() => setShowResetDialog(true)}
-                                className="text-sm font-medium text-primary hover:underline cursor-pointer"
-                            >
-                                Forgot Password?
-                            </div>
-                        </div>
-
                         {loginError && <p className="text-sm text-red-600 text-center">{loginError}</p>}
 
                         <Button type="submit" className="w-full" disabled={isLoading}>
@@ -220,14 +197,6 @@ export default function RoleBasedLoginPage() {
                         </Button>
                     </form>
                 </Form>
-
-                {/* Sign Up Link */}
-                <div className="text-center text-sm">
-                    Don&apos;t have an account?{" "}
-                    <Link href="/auth/signup" className="font-medium text-primary hover:underline">
-                        Sign up
-                    </Link>
-                </div>
             </div>
 
             {/* Reset Password Dialog */}
