@@ -487,19 +487,13 @@ export function BatchesList() {
                           <Tooltip key={teacher.id}>
                             <TooltipTrigger asChild>
                               <Avatar className="h-8 w-8 border-2 border-white cursor-pointer">
-                                {teacher.profilePictureURL ? (
-                                  <AvatarImage
-                                    src={
-                                      teacher.profilePictureURL ||
-                                      "/placeholder.svg"
-                                    }
-                                    alt={teacher.name}
-                                    onError={(e) => {
-                                      // If image fails to load, hide it and show fallback
-                                      e.currentTarget.style.display = "none";
-                                    }}
-                                  />
-                                ) : null}
+                                <AvatarImage
+                                  src={
+                                    teacher.profilePictureURL ||
+                                    "/placeholder-user.jpg"
+                                  }
+                                  alt={teacher.name}
+                                />
                                 <AvatarFallback>
                                   {teacher.name
                                     .split(" ")

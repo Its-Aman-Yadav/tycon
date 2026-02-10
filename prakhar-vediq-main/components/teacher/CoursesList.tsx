@@ -85,14 +85,13 @@ export function CoursesList() {
       if (!courseSnap.exists()) throw new Error("Course not found in Firestore")
 
       const courseData = courseSnap.data()
-      const modules = courseData.modules || []
-
-      const updatedModules = []
+      // Create a deep copy of modules to work with
+      const modules = JSON.parse(JSON.stringify(courseData.modules || []))
       let combinedTranscription = ""
 
+      // Step 1: Transcribe videos and save incrementally
       for (let i = 0; i < modules.length; i++) {
         const module = modules[i]
-        const updatedMaterials = []
 
         for (let j = 0; j < (module.materials || []).length; j++) {
           const material = module.materials[j]
@@ -100,58 +99,142 @@ export function CoursesList() {
           if (material.type === "video" && material.videoUrl) {
             const position = `Module ${i + 1}, Video ${j + 1}`
             setProgressText(`🎥 Processing ${position}...`)
+            let transcription = ""
+            let success = false
 
-            const res = await fetch("/api/transcribe-video", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ videoUrl: material.videoUrl }),
-            })
+            // Try to fetch normally first
+            try {
+              const res = await fetch("/api/transcribe-video", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  videoUrl: material.videoUrl,
+                  courseId,
+                  moduleIndex: i,
+                  videoIndex: j
+                }),
+              })
 
-            const transcribeData = await res.json()
-            if (!res.ok || !transcribeData.transcription) {
-              throw new Error(transcribeData.error || "Transcription failed")
+              if (res.status === 504) {
+                throw new Error("Gateway Timeout")
+              }
+
+              const transcribeData = await res.json()
+              if (res.ok && transcribeData.transcription) {
+                transcription = transcribeData.transcription
+                success = true
+              } else {
+                throw new Error(transcribeData.error || "Transcription failed")
+              }
+
+            } catch (err: any) {
+              // If it's a timeout or network error, switch to POLLING
+              if (err.message.includes("Timeout") || err.message.includes("504") || err.name === 'TypeError') {
+                console.warn(`Timeout/Network error for ${position}. Switching to polling mode...`)
+                setProgressText(`⏳ Server is busy. Polling for results... (${position})`)
+
+                // Poll every 5 seconds for up to 10 minutes (120 attempts)
+                let attempts = 0
+                const maxAttempts = 120
+
+                while (attempts < maxAttempts && !success) {
+                  attempts++
+                  await new Promise(r => setTimeout(r, 5000)) // Wait 5s
+
+                  // Check Firestore directly
+                  const freshSnap = await getDoc(courseRef)
+                  if (freshSnap.exists()) {
+                    const freshData = freshSnap.data()
+                    const freshModule = freshData.modules?.[i]
+                    const freshMaterial = freshModule?.materials?.[j]
+
+                    if (freshMaterial?.transcription) {
+                      transcription = freshMaterial.transcription
+                      success = true
+                      console.log(`✅ Polling successful for ${position}`)
+                    }
+                  }
+                }
+
+                if (!success) {
+                  console.warn(`Polling timed out for ${position}. Continuing...`)
+                }
+
+              } else {
+                console.error(`Error processing ${position}:`, err)
+                // Non-timeout error. Log and continue.
+              }
             }
 
-            const transcription = transcribeData.transcription
-            combinedTranscription += `\n\n${transcription}` // Append with spacing
-            updatedMaterials.push({ ...material, transcription })
-          } else {
-            updatedMaterials.push(material)
+            if (success && transcription) {
+              combinedTranscription += `\n\n${transcription}`
+              // Update local state to match what's in DB
+              modules[i].materials[j] = { ...material, transcription }
+            }
           }
         }
-
-        updatedModules.push({ ...module, materials: updatedMaterials })
       }
 
       // Step 2: Summarize combined transcription
-      setProgressText("📖 Summarizing all videos...")
-      const summaryRes = await fetch("/api/summarize-transcription", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transcription: combinedTranscription }),
-      })
+      if (combinedTranscription) {
+        try {
+          setProgressText("📖 Summarizing all videos...")
+          const summaryRes = await fetch("/api/summarize-transcription", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ transcription: combinedTranscription }),
+          })
 
-      const summaryData = await summaryRes.json()
-      if (!summaryRes.ok || !summaryData.longSummary || !summaryData.simplifiedSummary) {
-        throw new Error(summaryData.error || "Summarization failed")
+          const summaryData = await summaryRes.json()
+          if (!summaryRes.ok || !summaryData.longSummary || !summaryData.simplifiedSummary) {
+            // Don't fail the whole process if only summary fails
+            console.error("Summarization failed:", summaryData.error)
+            toast({
+              title: "Summarization Warning",
+              description: "Transcriptions were saved, but summarization failed.",
+              variant: "destructive",
+            })
+            // Still mark AI mode enabled
+            await updateDoc(courseRef, {
+              aiModeEnabled: true,
+            })
+          } else {
+            const { longSummary, simplifiedSummary } = summaryData
+
+            // Final save with summaries
+            setProgressText("💾 Saving summaries to Firestore...")
+            await updateDoc(courseRef, {
+              aiModeEnabled: true,
+              summarylong: longSummary,
+              summaryshort: simplifiedSummary,
+            })
+          }
+        } catch (summaryErr) {
+          console.error("Summary error:", summaryErr)
+          toast({
+            title: "Summarization Failed",
+            description: "Transcriptions saved, but could not generate summary.",
+            variant: "destructive",
+          })
+          // Still mark AI mode enabled
+          await updateDoc(courseRef, {
+            aiModeEnabled: true,
+          })
+        }
+      } else {
+        // No videos found?
+        await updateDoc(courseRef, { aiModeEnabled: true })
       }
-
-      const { longSummary, simplifiedSummary } = summaryData
-
-      // Final save to Firestore
-      setProgressText("💾 Saving results to Firestore...")
-      await updateDoc(courseRef, {
-        modules: updatedModules,
-        aiModeEnabled: true,
-        summarylong: longSummary,
-        summaryshort: simplifiedSummary,
-      })
 
       setProgressText("✅ AI Mode Enabled!")
       toast({
         title: "AI Mode Enabled",
         description: "Transcriptions and combined summaries saved successfully.",
       })
+
+      // Refresh local state (re-fetch courses)
+      fetchCourses()
+
     } catch (error: any) {
       console.error("❌ AI Mode Error:", error)
       toast({

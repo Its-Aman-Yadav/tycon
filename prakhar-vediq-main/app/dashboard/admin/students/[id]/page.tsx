@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { useRouter } from "next/navigation"
 import { format } from "date-fns"
 import { doc, getDoc } from "firebase/firestore"
@@ -50,7 +50,8 @@ interface Student {
   status: string // Added status field
 }
 
-export default function StudentDetailPage({ params }: { params: { id: string } }) {
+export default function StudentDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const router = useRouter()
   const [student, setStudent] = useState<Student | null>(null)
   const [loading, setLoading] = useState(true)
@@ -58,7 +59,7 @@ export default function StudentDetailPage({ params }: { params: { id: string } }
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const studentDoc = await getDoc(doc(db, "students", params.id))
+        const studentDoc = await getDoc(doc(db, "students", id))
 
         if (!studentDoc.exists()) {
           console.error("Student not found")
@@ -67,6 +68,25 @@ export default function StudentDetailPage({ params }: { params: { id: string } }
         }
 
         const data = studentDoc.data()
+
+        // Helper to safely serialize date
+        const serializeDate = (dateVal: any): string => {
+          if (!dateVal) return ""
+          if (typeof dateVal === "string") return dateVal
+          // Handle Firestore Timestamp
+          if (dateVal?.toDate && typeof dateVal.toDate === "function") {
+            return dateVal.toDate().toISOString()
+          }
+          // Handle other date objects
+          try {
+            return new Date(dateVal).toISOString()
+          } catch (e) {
+            return ""
+          }
+        }
+
+        const educationData = data.education || {}
+
         setStudent({
           id: studentDoc.id,
           fullName: data.fullName || "Unknown",
@@ -76,13 +96,13 @@ export default function StudentDetailPage({ params }: { params: { id: string } }
           dateOfBirth: data.dateOfBirth || "",
           gender: data.gender || "",
           profilePicture: data.profilePicture || "",
-          education: data.education || {
-            grade: "",
-            highestQualification: "",
-            institution: "",
-            yearOfCompletion: "",
+          education: {
+            grade: educationData.grade || "",
+            highestQualification: educationData.highestQualification || "",
+            institution: educationData.institution || "",
+            yearOfCompletion: educationData.yearOfCompletion || "",
           },
-          createdAt: data.createdAt || "",
+          createdAt: serializeDate(data.createdAt),
           password: data.password || "", // Note: This should not be displayed in the UI
           status: data.status || "inactive", // Fetch status from Firestore
         })
@@ -94,7 +114,7 @@ export default function StudentDetailPage({ params }: { params: { id: string } }
     }
 
     fetchStudent()
-  }, [params.id])
+  }, [id])
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "N/A"
@@ -231,7 +251,7 @@ export default function StudentDetailPage({ params }: { params: { id: string } }
           <CardContent className="p-6 flex flex-col items-center text-center">
             <Avatar className="h-32 w-32 mb-4">
               <AvatarImage
-                src={student.profilePicture || "/placeholder.svg?height=128&width=128&query=student"}
+                src={student.profilePicture || "/placeholder-user.jpg"}
                 alt={student.fullName}
               />
               <AvatarFallback className="text-2xl">{getInitials(student.fullName)}</AvatarFallback>

@@ -420,7 +420,7 @@ export function StudentsList() {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar>
-                        <AvatarImage src={student.profilePicture || "/placeholder.svg"} alt={student.fullName} />
+                        <AvatarImage src={student.profilePicture || "/placeholder-user.jpg"} alt={student.fullName} />
                         <AvatarFallback>
                           {student.fullName
                             .split(" ")

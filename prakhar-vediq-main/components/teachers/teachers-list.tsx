@@ -265,7 +265,7 @@ export function TeachersList() {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar>
-                        <AvatarImage src={teacher.avatar || "/placeholder.svg"} alt={teacher.name} />
+                        <AvatarImage src={teacher.avatar || "/placeholder-user.jpg"} alt={teacher.name} />
                         <AvatarFallback>
                           {teacher.name
                             .split(" ")

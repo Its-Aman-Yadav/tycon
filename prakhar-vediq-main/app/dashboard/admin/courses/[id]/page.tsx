@@ -367,9 +367,9 @@ export default function CourseDetailPage() {
   const getLevelBadgeVariant = (level: string) => {
     switch (level) {
       case "beginner":
-        return "success"
+        return "default"
       case "intermediate":
-        return "warning"
+        return "secondary"
       case "professional":
         return "destructive"
       default:

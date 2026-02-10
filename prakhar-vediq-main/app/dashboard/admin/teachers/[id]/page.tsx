@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { doc, getDoc, getFirestore } from "firebase/firestore"
+import { useEffect, useState, use } from "react"
+import { doc, getDoc } from "firebase/firestore"
 import {
   ArrowLeft,
   BookOpen,
@@ -22,7 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import app from "@/lib/firebase"
+import { db } from "@/lib/firebase"
 
 interface AvailabilityTimeSlot {
   morning: boolean
@@ -54,7 +54,8 @@ interface Teacher {
   availability: Availability
 }
 
-export default function TeacherDetailPage({ params }: { params: { id: string } }) {
+export default function TeacherDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   const [teacher, setTeacher] = useState<Teacher | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -62,8 +63,7 @@ export default function TeacherDetailPage({ params }: { params: { id: string } }
   useEffect(() => {
     async function fetchTeacher() {
       try {
-        const db = getFirestore(app)
-        const teacherDoc = doc(db, "teachers", params.id)
+        const teacherDoc = doc(db, "teachers", id)
         const teacherSnapshot = await getDoc(teacherDoc)
 
         if (!teacherSnapshot.exists()) {
@@ -72,9 +72,61 @@ export default function TeacherDetailPage({ params }: { params: { id: string } }
           return
         }
 
-        const teacherData = {
-          ...teacherSnapshot.data(),
-        } as Teacher
+        const data = teacherSnapshot.data()
+
+        // Create default availability object
+        const defaultAvailability: AvailabilityTimeSlot = { morning: false, afternoon: false, evening: false }
+        const defaultWeekAvailability: Availability = {
+          monday: { ...defaultAvailability },
+          tuesday: { ...defaultAvailability },
+          wednesday: { ...defaultAvailability },
+          thursday: { ...defaultAvailability },
+          friday: { ...defaultAvailability },
+          saturday: { ...defaultAvailability },
+          sunday: { ...defaultAvailability },
+        }
+
+        // Merge availability with defaults to handle partial data
+        const availabilityData = data?.availability || {}
+        const safeAvailability: Availability = {
+          monday: availabilityData.monday || { ...defaultAvailability },
+          tuesday: availabilityData.tuesday || { ...defaultAvailability },
+          wednesday: availabilityData.wednesday || { ...defaultAvailability },
+          thursday: availabilityData.thursday || { ...defaultAvailability },
+          friday: availabilityData.friday || { ...defaultAvailability },
+          saturday: availabilityData.saturday || { ...defaultAvailability },
+          sunday: availabilityData.sunday || { ...defaultAvailability },
+        }
+
+        // Helper to safely serialize date
+        const serializeDate = (dateVal: any): string => {
+          if (!dateVal) return new Date().toISOString()
+          if (typeof dateVal === "string") return dateVal
+          // Handle Firestore Timestamp
+          if (dateVal?.toDate && typeof dateVal.toDate === "function") {
+            return dateVal.toDate().toISOString()
+          }
+          // Handle other date objects
+          try {
+            return new Date(dateVal).toISOString()
+          } catch (e) {
+            return new Date().toISOString()
+          }
+        }
+
+        const teacherData: Teacher = {
+          uid: data?.uid || id,
+          fullName: data?.fullName || data?.name || "Unknown Teacher",
+          email: data?.email || "No email provided",
+          mobile: data?.mobile || "No mobile number",
+          subjects: Array.isArray(data?.subjects) ? data.subjects : [],
+          teacherType: data?.teacherType || data?.type || "Guest",
+          teachingMode: data?.teachingMode || "Online",
+          createdAt: serializeDate(data?.createdAt),
+          profilePictureURL: data?.profilePictureURL || data?.avatar || "",
+          assignedBatches: data?.assignedBatches || [],
+          availability: safeAvailability,
+        }
 
         setTeacher(teacherData)
         setLoading(false)
@@ -86,7 +138,7 @@ export default function TeacherDetailPage({ params }: { params: { id: string } }
     }
 
     fetchTeacher()
-  }, [params.id])
+  }, [id])
 
   if (loading) {
     return (
@@ -192,7 +244,7 @@ export default function TeacherDetailPage({ params }: { params: { id: string } }
           <div className="flex flex-col items-center gap-4 md:flex-row">
             <Avatar className="h-24 w-24 border-4 border-white shadow-md">
               <AvatarImage
-                src={teacher.profilePictureURL || "/placeholder.svg?height=96&width=96&query=teacher profile"}
+                src={teacher.profilePictureURL || "/placeholder-user.jpg"}
                 alt={teacher.fullName}
               />
               <AvatarFallback className="text-xl">

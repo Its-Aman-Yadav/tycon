@@ -83,13 +83,13 @@ function ActivityItem({ action, description, time, icon, user }: ActivityProps) 
   return (
     <div className="flex gap-4 border-b border-gray-100 py-4 last:border-0">
       <Avatar className="h-8 w-8">
-        <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name} />
+        <AvatarImage src={user?.avatar || "/placeholder-user.jpg"} alt={user?.name} />
         <AvatarFallback>
           {user?.name
             ? user.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
             : "U"}
         </AvatarFallback>
       </Avatar>
@@ -136,7 +136,7 @@ export function ActivityFeed() {
           action = "Live class completed"
           description = `${data.subject || "Class"} with ${data.batch || "students"} completed`
           userName = data.teacherName || "Teacher"
-          userAvatar = data.teacherAvatar || "/placeholder.svg"
+          userAvatar = data.teacherAvatar || "/placeholder-user.jpg"
           break
         case "student":
           action = "New students enrolled"

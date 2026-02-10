@@ -724,7 +724,7 @@ export default function KPIAnalysisDashboard() {
     lastAccessed: progress.lastAccessedAt ?
       new Date(progress.lastAccessedAt.toDate()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) :
       'Never',
-    avatar: progress.userAvatar || "/placeholder.svg?height=32&width=32",
+    avatar: progress.userAvatar || "/placeholder-user.jpg",
   }))
 
   // Calculate dynamic data
@@ -1223,7 +1223,7 @@ export default function KPIAnalysisDashboard() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={progress.userAvatar || "/placeholder.svg"} />
+                          <AvatarImage src={progress.userAvatar || "/placeholder-user.jpg"} />
                           <AvatarFallback>
                             {(progress.userName || 'U').charAt(0).toUpperCase()}
                           </AvatarFallback>

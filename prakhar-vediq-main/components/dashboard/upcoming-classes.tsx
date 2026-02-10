@@ -58,6 +58,7 @@ function ClassItem({ batchName, courseName, day, date, time, teacher }: BatchCla
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
+            <AvatarImage src="/placeholder-user.jpg" alt={teacher.name} />
             <AvatarFallback>
               {teacher.name
                 .split(" ")
@@ -264,9 +265,9 @@ export function UpcomingClasses() {
           <CardDescription>All scheduled upcoming live sessions</CardDescription>
         </div>
         <Link href="/dashboard/admin/batches">
-        <Button variant="ghost" size="sm" className="text-[#006400]">
-          View All <ArrowRight className="ml-1 h-4 w-4" />
-        </Button>
+          <Button variant="ghost" size="sm" className="text-[#006400]">
+            View All <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
         </Link>
       </CardHeader>
       <CardContent>

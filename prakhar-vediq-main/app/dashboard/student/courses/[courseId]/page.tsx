@@ -410,11 +410,7 @@ export default function CourseDetailPage() {
   const [submitted, setSubmitted] = useState(false)
   const [showResults, setShowResults] = useState(false)
 
-  useEffect(() => {
-    const email = localStorage.getItem("studentEmail")
-    setStudentEmail(email)
-    console.log("Student email from localStorage:", email) // ✅ This should log in console
-  }, [])
+
 
   // Progress tracking functions
   const initializeUserProgress = async () => {
@@ -895,14 +891,35 @@ export default function CourseDetailPage() {
   useEffect(() => {
     if (!courseId || typeof courseId !== "string") return
 
-    const fetchCourse = async () => {
+    const loadData = async () => {
       try {
-        const courseRef = doc(db, "courses", courseId)
-        const courseSnap = await getDoc(courseRef)
+        setLoading(true)
 
+        // 1. Get user email synchronously
+        const email = localStorage.getItem("studentEmail")
+        setStudentEmail(email)
+
+        // 2. Start all fetches in parallel
+        const coursePromise = getDoc(doc(db, "courses", courseId))
+
+        const reviewPromise = email
+          ? getDocs(query(collection(db, "courseReviews"), where("courseId", "==", courseId), where("userName", "==", email)))
+          : Promise.resolve(null)
+
+        const progressPromise = email
+          ? getDoc(doc(db, "userCourseProgress", `${email}_${courseId}`))
+          : Promise.resolve(null)
+
+        // 3. Await all
+        const [courseSnap, reviewSnap, progressSnap] = await Promise.all([coursePromise, reviewPromise, progressPromise])
+
+        // 4. Process Course Data
+        let fetchedCourse: Course | null = null
         if (courseSnap.exists()) {
           const courseData = courseSnap.data() as Omit<Course, "id">
-          setCourse({ id: courseSnap.id, ...courseData })
+          fetchedCourse = { id: courseSnap.id, ...courseData }
+          setCourse(fetchedCourse)
+
           if (courseData.modules?.length) {
             setActiveModuleId(courseData.modules[0].id)
             if (courseData.modules[0].materials?.length) {
@@ -911,23 +928,72 @@ export default function CourseDetailPage() {
           }
         } else {
           console.warn("Course not found")
+          setLoading(false)
+          return
         }
+
+        // 5. Process Review Data
+        if (reviewSnap && !reviewSnap.empty) {
+          const doc = reviewSnap.docs[0]
+          setUserReview({ id: doc.id, ...doc.data() } as CourseReview)
+        } else {
+          setUserReview(null)
+        }
+
+        // 6. Process Progress Data
+        if (progressSnap && fetchedCourse && email) {
+          if (progressSnap.exists()) {
+            const progressData = progressSnap.data() as UserCourseProgress
+            // Migration for status field
+            if (!progressData.status) {
+              const p = progressData.overallProgress || 0
+              const currentStatus = p === 100 ? "completed" : p >= 50 ? "halfway" : p > 0 ? "started" : "enrolled"
+              progressData.status = currentStatus
+              // Fire and forget update
+              updateDoc(progressSnap.ref, { status: currentStatus }).catch(e => console.error("Error updating status:", e))
+            }
+            setUserProgress({ id: progressSnap.id, ...progressData })
+          } else {
+            // Initialize new progress
+            const initialProgress: UserCourseProgress = {
+              userId: email,
+              courseId: courseId,
+              enrolledAt: new Date(),
+              lastAccessedAt: new Date(),
+              overallProgress: 0,
+              completed: false,
+              status: "enrolled",
+              modules: fetchedCourse.modules.map((module) => ({
+                moduleId: module.id,
+                completed: false,
+                materials: module.materials.map((material) => ({
+                  materialId: material.id,
+                  completed: false,
+                })),
+                assignmentCompleted: false,
+              })),
+              finalAssignmentCompleted: false,
+              totalTimeSpent: 0,
+              certificateIssued: false,
+            }
+
+            // We await this creation to ensure consistency, though it could be optimistic
+            await setDoc(doc(db, "userCourseProgress", `${email}_${courseId}`), initialProgress)
+            setUserProgress({ id: `${email}_${courseId}`, ...initialProgress })
+          }
+        }
+
       } catch (err) {
-        console.error("Failed to fetch course:", err)
+        console.error("Failed to fetch data:", err)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchCourse()
+    loadData()
   }, [courseId])
 
-  useEffect(() => {
-    if (course && studentEmail) {
-      initializeUserProgress()
-      fetchUserReview()
-    }
-  }, [course, studentEmail])
+
 
   const getActiveMaterial = () => {
     if (!course || !activeModuleId || !activeMaterialId) return null
@@ -1058,25 +1124,6 @@ export default function CourseDetailPage() {
     return "enrolled"
   }
 
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-      </div>
-    )
-  }
-
-  if (!course) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold">Course not found</h1>
-          <p className="text-muted-foreground">This course doesn't exist or access is restricted.</p>
-        </div>
-      </div>
-    )
-  }
-
 
   if (loading) {
     return (
@@ -1154,23 +1201,36 @@ export default function CourseDetailPage() {
       }
 
       if (material.type === "video" && material.videoUrl) {
-        const isYouTube = material.videoUrl.includes("youtube.com") || material.videoUrl.includes("youtu.be")
-        const isVimeo = material.videoUrl.includes("vimeo.com")
-
-        // Basic embed URL conversion for YouTube
         let embedUrl = material.videoUrl
-        if (isYouTube) {
-          if (material.videoUrl.includes("watch?v=")) {
-            embedUrl = material.videoUrl.replace("watch?v=", "embed/")
-          } else if (material.videoUrl.includes("youtu.be/")) {
-            embedUrl = material.videoUrl.replace("youtu.be/", "youtube.com/embed/")
-          }
+        let useIframe = false
+
+        // Check for YouTube
+        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+        const youtubeMatch = material.videoUrl.match(youtubeRegex)
+
+        // Check for Vimeo
+        const vimeoRegex = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)([0-9]+)/
+        const vimeoMatch = material.videoUrl.match(vimeoRegex)
+
+        // Check for Google Drive
+        const driveRegex = /(?:drive\.google\.com\/(?:file\/d\/|open\?id=))([a-zA-Z0-9_-]+)/
+        const driveMatch = material.videoUrl.match(driveRegex)
+
+        if (youtubeMatch && youtubeMatch[1]) {
+          embedUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`
+          useIframe = true
+        } else if (vimeoMatch && vimeoMatch[1]) {
+          embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}`
+          useIframe = true
+        } else if (driveMatch && driveMatch[1]) {
+          embedUrl = `https://drive.google.com/file/d/${driveMatch[1]}/preview`
+          useIframe = true
         }
 
         return (
           <div className="space-y-4">
             <div className="aspect-video w-full border rounded-lg overflow-hidden bg-black">
-              {isYouTube || isVimeo ? (
+              {useIframe ? (
                 <iframe
                   src={embedUrl}
                   className="w-full h-full"

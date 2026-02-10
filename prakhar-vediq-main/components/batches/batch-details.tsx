@@ -136,7 +136,7 @@ export function BatchDetails({ batchId }: BatchDetailsProps) {
         }
 
         // Step 4: Fetch course details if needed
-        let courseDetails = {
+        let courseDetails: { id: string; title: string; description?: string } = {
           id: batchData.courseId || "",
           title: batchData.courseName || "Unknown Course",
         }
@@ -269,13 +269,12 @@ export function BatchDetails({ batchId }: BatchDetailsProps) {
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-bold tracking-tight text-slate-900">{batch.name}</h1>
               <Badge
-                className={`px-2.5 py-0.5 text-xs font-medium ${
-                  batch.status === "active"
-                    ? "bg-emerald-50 text-emerald-600 border-emerald-200"
-                    : batch.status === "upcoming"
-                      ? "bg-sky-50 text-sky-600 border-sky-200"
-                      : "bg-slate-50 text-slate-600 border-slate-200"
-                }`}
+                className={`px-2.5 py-0.5 text-xs font-medium ${batch.status === "active"
+                  ? "bg-emerald-50 text-emerald-600 border-emerald-200"
+                  : batch.status === "upcoming"
+                    ? "bg-sky-50 text-sky-600 border-sky-200"
+                    : "bg-slate-50 text-slate-600 border-slate-200"
+                  }`}
               >
                 {batch.status.charAt(0).toUpperCase() + batch.status.slice(1)}
               </Badge>
@@ -339,15 +338,10 @@ export function BatchDetails({ batchId }: BatchDetailsProps) {
                           <Tooltip key={teacher.id}>
                             <TooltipTrigger asChild>
                               <Avatar className="h-7 w-7 border-2 border-white ring-1 ring-slate-100">
-                                {teacher.profilePictureURL ? (
-                                  <AvatarImage
-                                    src={teacher.profilePictureURL || "/placeholder.svg"}
-                                    alt={teacher.name}
-                                    onError={(e) => {
-                                      e.currentTarget.style.display = "none"
-                                    }}
-                                  />
-                                ) : null}
+                                <AvatarImage
+                                  src={teacher.profilePictureURL || "/placeholder-user.jpg"}
+                                  alt={teacher.name}
+                                />
                                 <AvatarFallback className="bg-sky-100 text-sky-600 text-xs">
                                   {teacher.name
                                     .split(" ")
@@ -507,15 +501,10 @@ export function BatchDetails({ batchId }: BatchDetailsProps) {
                       <div key={teacher.id} className="p-4 hover:bg-slate-50">
                         <div className="flex items-start space-x-4">
                           <Avatar className="h-10 w-10 border border-slate-200">
-                            {teacher.profilePictureURL ? (
-                              <AvatarImage
-                                src={teacher.profilePictureURL || "/placeholder.svg"}
-                                alt={teacher.name}
-                                onError={(e) => {
-                                  e.currentTarget.style.display = "none"
-                                }}
-                              />
-                            ) : null}
+                            <AvatarImage
+                              src={teacher.profilePictureURL || "/placeholder-user.jpg"}
+                              alt={teacher.name}
+                            />
                             <AvatarFallback className="bg-sky-100 text-sky-600">
                               {teacher.name
                                 .split(" ")
@@ -600,15 +589,10 @@ export function BatchDetails({ batchId }: BatchDetailsProps) {
                         <td className="whitespace-nowrap px-6 py-4">
                           <div className="flex items-center space-x-3">
                             <Avatar className="h-8 w-8 border border-slate-200">
-                              {student.profilePictureURL ? (
-                                <AvatarImage
-                                  src={student.profilePictureURL || "/placeholder.svg"}
-                                  alt={student.name}
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = "none"
-                                  }}
-                                />
-                              ) : null}
+                              <AvatarImage
+                                src={student.profilePictureURL || "/placeholder-user.jpg"}
+                                alt={student.name}
+                              />
                               <AvatarFallback className="bg-violet-100 text-violet-600 text-xs">
                                 {student.name
                                   .split(" ")

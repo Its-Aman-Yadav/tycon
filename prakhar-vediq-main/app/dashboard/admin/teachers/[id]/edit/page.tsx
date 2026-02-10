@@ -79,59 +79,59 @@ export default function EditUserPage({ params }: { params: { id: string } }) {
     fetchUser()
   }, [params.id])
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setSaving(true)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSaving(true)
 
-  try {
-    const db = getFirestore(app)
-    const userRef = doc(db, "users", params.id)
+    try {
+      const db = getFirestore(app)
+      const userRef = doc(db, "users", params.id)
 
-    // Fetch current user data before update
-    const currentData = (await getDoc(userRef)).data()
+      // Fetch current user data before update
+      const currentData = (await getDoc(userRef)).data()
 
-    // Detect password change
-    const isPasswordChanged = currentData?.password && currentData.password !== (user as any)?.password
+      // Detect password change
+      const isPasswordChanged = currentData?.password && currentData.password !== (user as any)?.password
 
-    // Update Firestore document
-    await updateDoc(userRef, {
-      fullName,
-      email,
-      bio,
-      profilePictureURL,
-      updatedAt: new Date().toISOString(),
-    })
-
-    toast({
-      title: "Success",
-      description: "User information updated successfully",
-    })
-
-    // If password changed, send notification email
-    if (isPasswordChanged) {
-      await fetch("/api/send-password-change-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: email,
-          name: fullName,
-        }),
+      // Update Firestore document
+      await updateDoc(userRef, {
+        fullName,
+        email,
+        bio,
+        profilePictureURL,
+        updatedAt: new Date().toISOString(),
       })
-      console.log("Password change email sent")
-    }
 
-    // Redirect back
-    router.push(`/users/${params.id}`)
-  } catch (err) {
-    console.error("Error updating user:", err)
-    toast({
-      title: "Error",
-      description: "Failed to update user information",
-      variant: "destructive",
-    })
-    setSaving(false)
+      toast({
+        title: "Success",
+        description: "User information updated successfully",
+      })
+
+      // If password changed, send notification email
+      if (isPasswordChanged) {
+        await fetch("/api/send-password-change-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: email,
+            name: fullName,
+          }),
+        })
+        console.log("Password change email sent")
+      }
+
+      // Redirect back
+      router.push(`/users/${params.id}`)
+    } catch (err) {
+      console.error("Error updating user:", err)
+      toast({
+        title: "Error",
+        description: "Failed to update user information",
+        variant: "destructive",
+      })
+      setSaving(false)
+    }
   }
-}
 
 
   if (loading) {
@@ -195,7 +195,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               <CardHeader className="flex flex-row items-center gap-4">
                 <Avatar className="h-16 w-16">
                   <AvatarImage
-                    src={profilePictureURL || "/placeholder.svg?height=64&width=64&query=user profile"}
+                    src={profilePictureURL || "/placeholder-user.jpg"}
                     alt={user.fullName}
                   />
                   <AvatarFallback>
@@ -284,7 +284,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <div className="flex flex-col items-center">
                   <Avatar className="h-20 w-20 mb-3">
                     <AvatarImage
-                      src={profilePictureURL || "/placeholder.svg?height=80&width=80&query=user profile"}
+                      src={profilePictureURL || "/placeholder-user.jpg"}
                       alt={fullName}
                     />
                     <AvatarFallback className="text-lg">
