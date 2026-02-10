@@ -775,7 +775,7 @@ export default function EditBatchPage() {
           {currentStep === "teachers" && (
             <Card className="mx-auto max-w-3xl p-6">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold">Assign Instructor</h2>
+                <h2 className="text-2xl font-bold">Assign Trainer</h2>
                 <p className="text-gray-600">Update teachers who will be responsible for this batch</p>
               </div>
               <div className="mb-4">

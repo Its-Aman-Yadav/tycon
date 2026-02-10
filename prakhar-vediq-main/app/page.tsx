@@ -494,7 +494,7 @@ export default function Home() {
                 {[
                   { label: "Courses", value: "1,000+", icon: BookOpen },
                   { label: "Students", value: "5,000+", icon: Users },
-                  { label: "Instructors", value: "100+", icon: Award },
+                  { label: "Trainers", value: "100+", icon: Award },
                   { label: "Completion Rate", value: "94%", icon: Clock },
                 ].map((stat, i) => (
                   <div

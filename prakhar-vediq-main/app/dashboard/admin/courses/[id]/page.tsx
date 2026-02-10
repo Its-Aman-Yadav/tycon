@@ -815,7 +815,7 @@ export default function CourseDetailPage() {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Users className="h-4 w-4 mr-2" />
-                Instructors
+                Trainers
               </CardTitle>
             </CardHeader>
             <CardContent>

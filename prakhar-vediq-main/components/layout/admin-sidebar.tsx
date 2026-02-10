@@ -93,7 +93,7 @@ export function AdminSidebar({ collapsed, toggleSidebar, currentPath }: AdminSid
 
   const navItems: NavItem[] = [
     { title: "KPI Analysis", href: "/dashboard", icon: <LayoutDashboard className="h-5 w-5" /> },
-    { title: "Instructors", href: "/dashboard/admin/teachers", icon: <GraduationCap className="h-5 w-5" /> },
+    { title: "Trainers", href: "/dashboard/admin/teachers", icon: <GraduationCap className="h-5 w-5" /> },
     { title: "Employees", href: "/dashboard/admin/students", icon: <Users className="h-5 w-5" /> },
     { title: "Courses", href: "/dashboard/admin/courses", icon: <BookOpen className="h-5 w-5" /> },
     { title: "Batches", href: "/dashboard/admin/batches", icon: <Calendar className="h-5 w-5" /> },

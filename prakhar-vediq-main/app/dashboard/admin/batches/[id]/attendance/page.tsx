@@ -176,7 +176,7 @@ export default function BatchAttendancePage() {
                 </Badge>
               </div>
               <div><span className="font-medium">Joined Students:</span> {batch.joinedStudents.length}</div>
-              <div className="col-span-2"><span className="font-medium">Instructor:</span>{" "}
+              <div className="col-span-2"><span className="font-medium">Trainer:</span>{" "}
                 {teachers.length > 0
                   ? teachers.map((t) => t.name).join(", ")
                   : "Not Assigned"}

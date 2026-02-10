@@ -141,7 +141,7 @@ export default function RoleBasedLoginPage() {
                         variant={role === "teachers" ? "default" : "outline"}
                         onClick={() => router.push("/auth/login/teacher")}
                     >
-                        Instructor Login
+                        Trainer Login
                     </Button>
                 </div>
 

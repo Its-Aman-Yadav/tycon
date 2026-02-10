@@ -200,7 +200,7 @@ export function TeachersList() {
           <div className="relative flex-1">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search instructors by name, email or subject..."
+              placeholder="Search traniners by name, email or subject..."
               className="pl-8"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -252,7 +252,7 @@ export function TeachersList() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Instructors</TableHead>
+                <TableHead>Trainers</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Subject Expertise</TableHead>
                 <TableHead>Type</TableHead>

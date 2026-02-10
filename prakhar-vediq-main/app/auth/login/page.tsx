@@ -144,7 +144,7 @@ export default function LoginPage() {
             variant={isTeacher ? "default" : "outline"}
             onClick={() => router.push("/auth/login/teacher")}
           >
-            Instructor Login
+            Trainer Login
           </Button>
         </div>
 

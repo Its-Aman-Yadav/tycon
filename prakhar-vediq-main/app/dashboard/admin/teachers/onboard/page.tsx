@@ -5,7 +5,7 @@ export default function OnboardTeacherPage() {
     <div className="min-h-screen bg-gray-50">
       <main className="container mx-auto px-4 py-6">
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800">Onboard New Teacher</h1>
+          <h1 className="text-2xl font-semibold text-gray-800">Onboard New Trainer</h1>
           <p className="text-gray-500">Add a new teacher to the system and assign them to batches</p>
         </div>
 

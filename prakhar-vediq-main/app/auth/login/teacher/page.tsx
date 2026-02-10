@@ -139,7 +139,7 @@ export default function TeacherLoginPage() {
           <Button variant="outline" onClick={() => router.push("/auth/login/student")}>
             Student Login
           </Button>
-          <Button variant="default">Instructor Login</Button>
+          <Button variant="default">Trainer Login</Button>
         </div>
 
         {/* Logo */}
@@ -154,7 +154,7 @@ export default function TeacherLoginPage() {
 
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-xl font-bold text-gray-900">Instructor Login</h1>
+          <h1 className="text-xl font-bold text-gray-900">Trainer Login</h1>
           <p className="text-sm text-muted-foreground">
             Access your dashboard and manage your classes
           </p>
