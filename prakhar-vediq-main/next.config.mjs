@@ -9,6 +9,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  serverExternalPackages: ['ffmpeg-static', 'fluent-ffmpeg'],
 }
 
 export default nextConfig

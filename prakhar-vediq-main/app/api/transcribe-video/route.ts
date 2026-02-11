@@ -42,6 +42,13 @@ const getFfmpegPath = () => {
         for (const p of possiblePaths) {
             if (fs.existsSync(p)) {
                 console.log("✅ Found ffmpeg at:", p);
+                try {
+                    // Ensure executable permissions
+                    fs.chmodSync(p, 0o755);
+                    console.log("✅ Set executable permissions for:", p);
+                } catch (e) {
+                    console.warn("⚠️ Failed to set executable permissions:", e);
+                }
                 return p;
             }
         }
