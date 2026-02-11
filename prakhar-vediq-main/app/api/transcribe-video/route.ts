@@ -12,58 +12,93 @@ import { db } from "@/lib/firebase-admin"; // Import server-side db
 // Configure ffmpeg path with fallback
 // Configure ffmpeg path with fallback
 const getFfmpegPath = () => {
+    const logs: string[] = [];
+    const log = (msg: string) => logs.push(msg);
+    let resolvedPath: string | null = null;
+
     try {
-        const possiblePaths: string[] = [];
+        log(`Initial CWD: ${process.cwd()}`);
 
-        // 1. Try what the library gives us (if it's a valid local path)
+        // 1. Try what the library gives us
         if (ffmpegPath && fs.existsSync(ffmpegPath)) {
-            console.log("✅ Using ffmpeg from import:", ffmpegPath);
-            return ffmpegPath;
+            log(`✅ Found via import: ${ffmpegPath}`);
+            resolvedPath = ffmpegPath;
         }
 
-        // 2. Try looking in node_modules relative to CWD
-        possiblePaths.push(path.join(process.cwd(), 'node_modules', 'ffmpeg-static', 'ffmpeg'));
-        possiblePaths.push(path.join(process.cwd(), 'node_modules', 'ffmpeg-static', 'ffmpeg.exe'));
+        // 2. Search structure
+        if (!resolvedPath) {
+            // We'll search up from CWD for node_modules
+            let currentDir = process.cwd();
+            const root = path.parse(currentDir).root;
 
-        // 3. Try require.resolve
-        try {
-            // @ts-ignore
-            if (typeof require !== 'undefined' && require.resolve) {
-                // @ts-ignore
-                const pkg = require.resolve('ffmpeg-static');
-                const dir = path.dirname(pkg);
-                possiblePaths.push(path.join(dir, 'ffmpeg'));
-                possiblePaths.push(path.join(dir, 'ffmpeg.exe'));
-            }
-        } catch (e) {
-            // ignore
-        }
+            // Limit depth to avoid infinite loops, but search up to 5 levels
+            for (let i = 0; i < 5; i++) {
+                const candidates = [
+                    path.join(currentDir, 'node_modules', 'ffmpeg-static', 'ffmpeg'),
+                    path.join(currentDir, 'node_modules', 'ffmpeg-static', 'ffmpeg.exe'),
+                ];
 
-        for (const p of possiblePaths) {
-            if (fs.existsSync(p)) {
-                console.log("✅ Found ffmpeg at:", p);
-                try {
-                    // Ensure executable permissions
-                    fs.chmodSync(p, 0o755);
-                    console.log("✅ Set executable permissions for:", p);
-                } catch (e) {
-                    console.warn("⚠️ Failed to set executable permissions:", e);
+                for (const candidate of candidates) {
+                    if (fs.existsSync(candidate)) {
+                        log(`✅ Found candidate at: ${candidate}`);
+                        resolvedPath = candidate;
+                        break;
+                    } else {
+                        // Only log first level failures to keep logs clean, or all for debug
+                        if (i === 0) log(`❌ Not found at: ${candidate}`);
+                    }
                 }
-                return p;
+
+                if (resolvedPath) break;
+                if (currentDir === root) break;
+                currentDir = path.dirname(currentDir);
             }
         }
 
-        console.warn("⚠️ ffmpeg-static binary not found in standard locations - falling back to system 'ffmpeg'");
-        return "ffmpeg";
+        // 3. Last ditch: require.resolve if available
+        if (!resolvedPath) {
+            try {
+                // @ts-ignore
+                if (typeof require !== 'undefined' && require.resolve) {
+                    // @ts-ignore
+                    const pkg = require.resolve('ffmpeg-static');
+                    const dir = path.dirname(pkg);
+                    const candidate = path.join(dir, 'ffmpeg');
+                    if (fs.existsSync(candidate)) {
+                        log(`✅ Found via require.resolve at: ${candidate}`);
+                        resolvedPath = candidate;
+                    }
+                }
+            } catch (e) {
+                log(`require.resolve failed: ${(e as any).message}`);
+            }
+        }
+
+        if (resolvedPath) {
+            // Ensure executable permissions
+            try {
+                fs.chmodSync(resolvedPath, 0o755);
+                log("✅ Set +x permission");
+            } catch (e) {
+                log(`⚠️ chmod failed: ${(e as any).message}`);
+            }
+            return { path: resolvedPath, logs };
+        }
+
+        log("⚠️ ffmpeg-static binary not found in any standard location.");
+        return { path: "ffmpeg", logs }; // Fallback to system command
     } catch (err) {
-        console.error("❌ Error resolving ffmpeg path:", err);
-        return "ffmpeg";
+        log(`❌ Unexpected error in resolution: ${(err as any).message}`);
+        return { path: "ffmpeg", logs };
     }
 };
 
-const configuredFfmpegPath = getFfmpegPath();
-if (configuredFfmpegPath) {
+const { path: configuredFfmpegPath, logs: ffmpegIds } = getFfmpegPath();
+if (configuredFfmpegPath && configuredFfmpegPath !== 'ffmpeg') {
     ffmpeg.setFfmpegPath(configuredFfmpegPath);
+} else {
+    // If we fell back to 'ffmpeg', we assume it's in PATH, but we'll log it
+    console.warn("Using system 'ffmpeg' as fallback. Resolution logs:", ffmpegIds);
 }
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
@@ -206,11 +241,17 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({ transcription: finalTranscription });
-
     } catch (error: any) {
         console.error("❌ Transcription failed:", error);
         return NextResponse.json(
-            { error: error.message || "Unknown error" },
+            {
+                error: error.message || "Unknown error",
+                debug: {
+                    ffmpegPath: configuredFfmpegPath,
+                    resolutionLogs: ffmpegIds,
+                    cwd: process.cwd(),
+                }
+            },
             { status: 500 }
         );
     } finally {
