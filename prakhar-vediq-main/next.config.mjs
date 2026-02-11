@@ -10,6 +10,11 @@ const nextConfig = {
     unoptimized: true,
   },
   serverExternalPackages: ['ffmpeg-static', 'fluent-ffmpeg'],
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/transcribe-video': ['./node_modules/ffmpeg-static/**/*'],
+    },
+  },
 }
 
 export default nextConfig
