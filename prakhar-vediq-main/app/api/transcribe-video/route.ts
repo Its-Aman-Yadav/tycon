@@ -10,17 +10,48 @@ import ffmpegPath from "ffmpeg-static";
 import { db } from "@/lib/firebase-admin"; // Import server-side db
 
 // Configure ffmpeg path with fallback
+// Configure ffmpeg path with fallback
 const getFfmpegPath = () => {
-    // 1. Try what the library gives us
-    if (ffmpegPath && fs.existsSync(ffmpegPath)) return ffmpegPath;
+    try {
+        const possiblePaths: string[] = [];
 
-    // 2. Try looking in node_modules relative to CWD (fixes Next.js bundling issues)
-    const localPath = path.join(process.cwd(), 'node_modules', 'ffmpeg-static', 'ffmpeg');
-    if (fs.existsSync(localPath)) return localPath;
+        // 1. Try what the library gives us (if it's a valid local path)
+        if (ffmpegPath && fs.existsSync(ffmpegPath)) {
+            console.log("✅ Using ffmpeg from import:", ffmpegPath);
+            return ffmpegPath;
+        }
 
-    // 3. Fallback
-    console.warn("⚠️ ffmpeg-static binary not found at:", ffmpegPath, "or", localPath, "- falling back to system 'ffmpeg'");
-    return "ffmpeg";
+        // 2. Try looking in node_modules relative to CWD
+        possiblePaths.push(path.join(process.cwd(), 'node_modules', 'ffmpeg-static', 'ffmpeg'));
+        possiblePaths.push(path.join(process.cwd(), 'node_modules', 'ffmpeg-static', 'ffmpeg.exe'));
+
+        // 3. Try require.resolve
+        try {
+            // @ts-ignore
+            if (typeof require !== 'undefined' && require.resolve) {
+                // @ts-ignore
+                const pkg = require.resolve('ffmpeg-static');
+                const dir = path.dirname(pkg);
+                possiblePaths.push(path.join(dir, 'ffmpeg'));
+                possiblePaths.push(path.join(dir, 'ffmpeg.exe'));
+            }
+        } catch (e) {
+            // ignore
+        }
+
+        for (const p of possiblePaths) {
+            if (fs.existsSync(p)) {
+                console.log("✅ Found ffmpeg at:", p);
+                return p;
+            }
+        }
+
+        console.warn("⚠️ ffmpeg-static binary not found in standard locations - falling back to system 'ffmpeg'");
+        return "ffmpeg";
+    } catch (err) {
+        console.error("❌ Error resolving ffmpeg path:", err);
+        return "ffmpeg";
+    }
 };
 
 const configuredFfmpegPath = getFfmpegPath();
@@ -68,7 +99,10 @@ export async function POST(req: NextRequest) {
         // 2. Extract and Compress Audio
         console.log("🎧 Extracting compressed audio...");
         await new Promise((resolve, reject) => {
-            ffmpeg(tempInputPath!)
+            const command = ffmpeg(tempInputPath!);
+            if (configuredFfmpegPath) command.setFfmpegPath(configuredFfmpegPath);
+
+            command
                 .toFormat("mp3")
                 .audioBitrate("32k")
                 .on("end", resolve)
@@ -91,7 +125,10 @@ export async function POST(req: NextRequest) {
             const chunkDuration = 500; // ~ 8.3 minutes per chunk (safe size) - approx 2MB at 32k bitrate
 
             await new Promise((resolve, reject) => {
-                ffmpeg(tempOutputPath!)
+                const command = ffmpeg(tempOutputPath!);
+                if (configuredFfmpegPath) command.setFfmpegPath(configuredFfmpegPath);
+
+                command
                     .outputOptions([
                         `-f segment`,
                         `-segment_time ${chunkDuration}`,
