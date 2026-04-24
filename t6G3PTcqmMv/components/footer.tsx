@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Mail, Phone, MapPin, Linkedin, Facebook, Twitter } from "lucide-react"
+import { Mail, Phone, MapPin } from "lucide-react"
 
 const footerLinks = {
   company: [
@@ -19,8 +19,6 @@ const footerLinks = {
   support: [
     { name: "Send Enquiry", href: "/enquiry" },
     { name: "All Products", href: "/products" },
-    { name: "Material Handling", href: "/products/material-handling-equipments" },
-    { name: "Electromagnetic Vibrator", href: "/products/electromagnetic-vibrator" },
   ],
 }
 
@@ -47,15 +45,15 @@ export function Footer() {
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4 text-primary" />
-                <span>Industrial Area, Pune, Maharashtra, India</span>
+                <span>C-68, M.I.D.C. Industrial Area, Hingna, Nagpur – 440028</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4 text-primary" />
-                <span>+91 20 1234 5678</span>
+                <span>+91 83084 89200 / 94224 44120</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4 text-primary" />
-                <span>info@tycoindia.com</span>
+                <span>sales@tyco-india.com</span>
               </div>
             </div>
           </div>
@@ -113,24 +111,10 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-16 pt-8 border-t border-border flex justify-center">
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} TYCO India. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
-            <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-              <span className="sr-only">LinkedIn</span>
-              <Linkedin className="h-5 w-5" />
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-              <span className="sr-only">Facebook</span>
-              <Facebook className="h-5 w-5" />
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-              <span className="sr-only">Twitter</span>
-              <Twitter className="h-5 w-5" />
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

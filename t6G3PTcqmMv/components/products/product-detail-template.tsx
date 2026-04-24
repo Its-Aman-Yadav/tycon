@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
@@ -37,11 +38,18 @@ import {
   Battery,
   VolumeX,
   Clock,
-  ChevronDown,
   Building2,
-  Info
+  ChevronDown
 } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import type { Product } from "@/lib/products-data"
+import { clients } from "@/lib/products-data"
+import { RelatedProducts } from "./related-products"
 
 const iconMap: Record<string, React.ElementType> = {
   shield: Shield,
@@ -80,8 +88,6 @@ interface ProductDetailTemplateProps {
 }
 
 export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
-  const [activeTab, setActiveTab] = useState<"specs" | "performance" | "variants">("specs")
-  
   return (
     <>
       {/* Section 1: Product Hero */}
@@ -110,16 +116,26 @@ export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-card to-muted border border-border overflow-hidden sticky top-32">
-                <div className="w-full h-full flex items-center justify-center p-12">
-                  <div className="text-center">
-                    <div className="w-40 h-40 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center mb-6 border border-primary/20">
-                      <Cog className="w-20 h-20 text-primary" />
+              <div className="aspect-square rounded-2xl bg-white border border-border overflow-hidden sticky top-32 shadow-sm">
+                <div className="w-full h-full flex items-center justify-center p-8 md:p-12 relative">
+                  {product.image ? (
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-contain p-8 transition-transform duration-500 hover:scale-105"
+                      priority
+                    />
+                  ) : (
+                    <div className="text-center">
+                      <div className="w-40 h-40 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center mb-6 border border-primary/20">
+                        <Cog className="w-20 h-20 text-primary animate-spin-slow" />
+                      </div>
+                      <span className="text-3xl font-bold text-primary font-display">{product.model}</span>
+                      <p className="mt-2 text-muted-foreground">{product.name}</p>
+                      <p className="mt-4 text-xs text-muted-foreground">Image coming soon</p>
                     </div>
-                    <span className="text-3xl font-bold text-primary font-display">{product.model}</span>
-                    <p className="mt-2 text-muted-foreground">{product.name}</p>
-                    <p className="mt-4 text-xs text-muted-foreground">Product image placeholder</p>
-                  </div>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -159,10 +175,36 @@ export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
                     Send Enquiry
                   </Link>
                 </Button>
-                <Button variant="outline" size="lg" className="border-border hover:bg-muted">
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Brochure
-                </Button>
+                {product.hasBrochure && (
+                  <>
+                    {product.brochures && product.brochures.length > 0 ? (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="lg" className="border-border hover:bg-muted group">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download Brochure
+                            <ChevronDown className="w-4 h-4 ml-2 opacity-50 group-data-[state=open]:rotate-180 transition-transform" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-56 bg-card border-border">
+                          {product.brochures.map((brochure) => (
+                            <DropdownMenuItem key={brochure.url} asChild className="cursor-pointer hover:bg-muted focus:bg-muted">
+                              <a href={brochure.url} download className="flex items-center w-full">
+                                <Download className="w-4 h-4 mr-2 text-primary" />
+                                {brochure.title}
+                              </a>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    ) : (
+                      <Button variant="outline" size="lg" className="border-border hover:bg-muted">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Brochure
+                      </Button>
+                    )}
+                  </>
+                )}
               </div>
             </motion.div>
           </div>
@@ -281,301 +323,53 @@ export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
         </div>
       </section>
 
-      {/* Section 5: Technical Specifications */}
-      <section className="py-16 lg:py-24 bg-background">
+      {/* Section 5: Custom Solutions */}
+      <section className="py-16 lg:py-24 bg-background border-y border-border">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mb-8"
-          >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase">Technical Data</span>
-            <h2 className="mt-2 text-2xl md:text-3xl font-bold text-foreground font-display">
-              Specifications &amp; Performance
-            </h2>
-          </motion.div>
-
-          {/* Tabs */}
-          <div className="flex flex-wrap gap-2 mb-8 border-b border-border pb-4">
-            {[
-              { id: "specs", label: "Technical Specifications" },
-              { id: "performance", label: "Performance / Output" },
-              { id: "variants", label: "Model Variants" }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Tab Content */}
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {activeTab === "specs" && (
-              <div className="p-8 rounded-2xl bg-card border border-border overflow-x-auto">
-                {/* If we have a structured table (like for Pulveriser) */}
-                {product.technicalSpecsTable ? (
-                  <table className="w-full min-w-[700px]">
-                    <thead>
-                      <tr className="border-b border-border">
-                        {product.technicalSpecsTable.headers.map((header) => (
-                          <th key={header} className="text-left py-3 px-4 text-muted-foreground font-medium text-sm">
-                            {header}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {product.technicalSpecsTable.rows.map((row) => (
-                        <tr key={row.parameter} className="border-b border-border last:border-0">
-                          <td className="py-4 px-4 text-primary font-semibold">{row.parameter}</td>
-                          {row.values.map((value, i) => (
-                            <td key={i} className="py-4 px-4 text-foreground">{value}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : product.technicalSpecs ? (
-                  /* Fallback to key-value specs */
-                  <div className="grid md:grid-cols-2 gap-x-12 gap-y-4">
-                    {Object.entries(product.technicalSpecs).map(([label, value]) => (
-                      <div key={label} className="flex justify-between items-center py-3 border-b border-border last:border-0">
-                        <span className="text-muted-foreground">{label}</span>
-                        <span className="font-medium text-foreground text-right">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            )}
-
-            {activeTab === "performance" && (
-              <div className="space-y-8">
-                {/* Performance Output Table */}
-                <div className="p-8 rounded-2xl bg-card border border-border overflow-x-auto">
-                  <h3 className="text-lg font-semibold text-foreground mb-6">Output Performance by Material</h3>
-                  <table className="w-full min-w-[500px]">
-                    <thead>
-                      <tr className="border-b border-border">
-                        <th className="text-left py-3 text-muted-foreground font-medium">Material</th>
-                        <th className="text-center py-3 text-muted-foreground font-medium">Fineness</th>
-                        <th className="text-right py-3 text-muted-foreground font-medium">Output Range</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {product.performanceData.map((data) => (
-                        <tr key={data.material} className="border-b border-border last:border-0">
-                          <td className="py-4 text-foreground font-medium">{data.material}</td>
-                          <td className="py-4 text-center text-primary">{data.fineness}</td>
-                          <td className="py-4 text-right font-mono text-foreground">{data.outputRange}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Mesh to Micron Comparison (if available) */}
-                {product.meshMicronTable && product.meshMicronTable.length > 0 && (
-                  <div className="p-6 rounded-2xl bg-muted/50 border border-border">
-                    <div className="flex items-start gap-3 mb-4">
-                      <Info className="w-5 h-5 text-primary mt-0.5" />
-                      <div>
-                        <h4 className="text-sm font-semibold text-foreground">Mesh to Micron Reference</h4>
-                        <p className="text-xs text-muted-foreground mt-1">Quick conversion guide for particle size specifications</p>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-4">
-                      {product.meshMicronTable.map((item) => (
-                        <div key={item.mesh} className="px-4 py-2 rounded-lg bg-background border border-border">
-                          <span className="text-primary font-semibold">{item.mesh} mesh</span>
-                          <span className="text-muted-foreground mx-2">=</span>
-                          <span className="text-foreground">{item.microns} microns</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {activeTab === "variants" && (
-              <div className="space-y-6">
-                {/* Model variants table for products with detailed specs */}
-                {product.variants[0]?.diameter ? (
-                  <div className="p-8 rounded-2xl bg-card border border-border overflow-x-auto">
-                    <table className="w-full min-w-[800px]">
-                      <thead>
-                        <tr className="border-b border-border">
-                          <th className="text-left py-3 px-4 text-muted-foreground font-medium">Model</th>
-                          <th className="text-center py-3 px-4 text-muted-foreground font-medium">Diameter</th>
-                          <th className="text-center py-3 px-4 text-muted-foreground font-medium">Rotor RPM</th>
-                          <th className="text-center py-3 px-4 text-muted-foreground font-medium">Hammers</th>
-                          <th className="text-center py-3 px-4 text-muted-foreground font-medium">Main Motor (HP)</th>
-                          <th className="text-center py-3 px-4 text-muted-foreground font-medium">Blower Motor (HP)</th>
-                          <th className="text-right py-3 px-4 text-muted-foreground font-medium">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {product.variants.map((variant) => (
-                          <tr key={variant.model} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
-                            <td className="py-4 px-4 text-primary font-bold">{variant.model}</td>
-                            <td className="py-4 px-4 text-center text-foreground">{variant.diameter}</td>
-                            <td className="py-4 px-4 text-center text-foreground">{variant.rotorRpm}</td>
-                            <td className="py-4 px-4 text-center text-foreground">{variant.hammers}</td>
-                            <td className="py-4 px-4 text-center text-foreground">{variant.mainMotorHp}</td>
-                            <td className="py-4 px-4 text-center text-foreground">{variant.blowerMotorHp}</td>
-                            <td className="py-4 px-4 text-right">
-                              <Button asChild variant="outline" size="sm">
-                                <Link href={`/enquiry?product=${product.id}&model=${variant.model}`}>
-                                  Enquire
-                                </Link>
-                              </Button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  /* Card layout for simpler variants */
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {product.variants.map((variant) => (
-                      <div
-                        key={variant.model}
-                        className="p-6 rounded-xl bg-card border border-border hover:border-primary/50 transition-colors"
-                      >
-                        <div className="flex items-start justify-between mb-4">
-                          <h3 className="text-xl font-bold text-primary font-display">{variant.model}</h3>
-                          <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-4">{variant.description}</p>
-                        <div className="space-y-2 text-sm">
-                          {variant.capacity && (
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Capacity</span>
-                              <span className="text-foreground font-medium">{variant.capacity}</span>
-                            </div>
-                          )}
-                          {variant.power && (
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Power</span>
-                              <span className="text-foreground font-medium">{variant.power}</span>
-                            </div>
-                          )}
-                        </div>
-                        <Button asChild variant="outline" size="sm" className="mt-4 w-full">
-                          <Link href={`/enquiry?product=${product.id}&model=${variant.model}`}>
-                            Enquire About This Model
-                          </Link>
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Section 6: Additional Requirements (if available) */}
-      {product.additionalRequirements && product.additionalRequirements.length > 0 && (
-        <section className="py-16 lg:py-24 bg-card">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="mb-12"
-            >
-              <span className="text-primary text-sm font-medium tracking-wider uppercase">Installation</span>
-              <h2 className="mt-2 text-2xl md:text-3xl font-bold text-foreground font-display">
-                Requirements &amp; Notes
-              </h2>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {product.additionalRequirements.map((req, index) => (
-                <motion.div
-                  key={req.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="p-6 rounded-xl bg-background border border-border"
-                >
-                  <h3 className="text-lg font-semibold text-foreground font-display mb-4">{req.title}</h3>
-                  <ul className="space-y-3">
-                    {req.items.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-                        <CheckCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8 md:p-12 rounded-2xl bg-primary/5 border border-primary/10">
+            <div>
+              <h3 className="text-2xl font-bold text-foreground font-display">Need a Custom Solution?</h3>
+              <p className="mt-2 text-muted-foreground">
+                We specialize in tailor-making machines to fit your specific production line and material requirements.
+              </p>
             </div>
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground whitespace-nowrap">
+              <Link href={`/enquiry?product=${product.id}`}>
+                Discuss Your Requirements
+              </Link>
+            </Button>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {/* Section 7: Related Clients */}
-      <section className="py-16 lg:py-24 bg-background">
+      {/* Section 6: Related Clients */}
+      <section className="py-16 lg:py-24 bg-muted/30">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
+          <div className="text-center mb-10">
             <span className="text-primary text-sm font-medium tracking-wider uppercase">Trusted By</span>
-            <h2 className="mt-2 text-2xl md:text-3xl font-bold text-foreground font-display">
-              Customers Using This Product
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {product.relatedClients.map((client, index) => (
-              <motion.div
-                key={client}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="p-6 rounded-xl bg-card border border-border flex items-center justify-center"
-              >
-                <div className="text-center">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-muted flex items-center justify-center mb-3">
-                    <Building2 className="w-6 h-6 text-muted-foreground" />
-                  </div>
-                  <span className="text-sm font-medium text-foreground">{client}</span>
-                </div>
-              </motion.div>
+            <h2 className="mt-2 text-2xl font-bold text-foreground font-display">Our Valued Clients</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-60">
+            {clients.slice(0, 6).map((client) => (
+              <div key={client.name} className="flex justify-center grayscale hover:grayscale-0 transition-all duration-300">
+                <Image
+                  src={client.logo}
+                  alt={client.name}
+                  width={120}
+                  height={60}
+                  className="h-12 w-auto object-contain"
+                />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Section 8: Inline Enquiry Form */}
+      {/* Section 7: Inline Enquiry Form */}
       <ProductEnquiryForm product={product} />
+
+      {/* Section 8: Related Products */}
+      <RelatedProducts currentProductId={product.id} category={product.category} />
     </>
   )
 }

@@ -7,24 +7,16 @@ const offices = [
   {
     name: "Nagpur Works",
     type: "Manufacturing",
-    address: "MIDC Industrial Area\nHingna Road, Nagpur 440016\nMaharashtra, India",
-    phone: "+91 712 2801234",
-    email: "works@tycoindia.com",
+    address: "C-68, M.I.D.C. Industrial Area\nHingna, Nagpur – 440028\nMaharashtra, India",
+    phone: "+91 83084 89200 / 94224 44120",
+    email: "sales@tyco-india.com",
     isPrimary: true,
-  },
-  {
-    name: "Pune Office",
-    type: "Sales & Service",
-    address: "Office No. 45, Tech Park\nHadapsar, Pune 411028\nMaharashtra, India",
-    phone: "+91 20 12345678",
-    email: "pune@tycoindia.com",
-    isPrimary: false,
   },
 ]
 
 const branchCities = [
   "Mumbai", "Ahmedabad", "Chennai", "Kolkata", "Hyderabad", 
-  "Bangalore", "Delhi", "Jaipur", "Indore", "Coimbatore"
+  "Bangalore", "Delhi", "Delhi NCR", "Jaipur", "Indore", "Coimbatore"
 ]
 
 export function ContactInfo() {
@@ -85,22 +77,22 @@ export function ContactInfo() {
           <div className="flex gap-3">
             <Phone className="w-4 h-4 text-muted-foreground flex-shrink-0" />
             <div>
-              <a href="tel:+917122801234" className="text-foreground hover:text-primary transition-colors block">
-                +91 712 280 1234
+              <a href="tel:+918308489200" className="text-foreground hover:text-primary transition-colors block">
+                +91 83084 89200
               </a>
-              <a href="tel:+917122801235" className="text-foreground hover:text-primary transition-colors block">
-                +91 712 280 1235
+              <a href="tel:+919422444120" className="text-foreground hover:text-primary transition-colors block">
+                +91 94224 44120
               </a>
             </div>
           </div>
           <div className="flex gap-3">
             <Mail className="w-4 h-4 text-muted-foreground flex-shrink-0" />
             <div>
-              <a href="mailto:info@tycoindia.com" className="text-foreground hover:text-primary transition-colors block">
-                info@tycoindia.com
+              <a href="mailto:sales@tyco-india.com" className="text-foreground hover:text-primary transition-colors block">
+                sales@tyco-india.com
               </a>
-              <a href="mailto:sales@tycoindia.com" className="text-foreground hover:text-primary transition-colors block">
-                sales@tycoindia.com
+              <a href="mailto:himanshu@tyco-india.com" className="text-foreground hover:text-primary transition-colors block">
+                himanshu@tyco-india.com
               </a>
             </div>
           </div>

@@ -16,6 +16,7 @@ const products = [
     applications: ["Chemicals", "Minerals", "Pharmaceuticals"],
     href: "/products/pulveriser",
     image: "/products/P-01_tyco-india-pulverizer.jpg",
+    hasBrochure: true,
   },
   {
     id: "spices-pulverizer",
@@ -24,6 +25,7 @@ const products = [
     applications: ["Spices", "Food Processing", "Masala"],
     href: "/products/spices-pulverizer",
     image: "/products/P-02_tyco-india-spices-pulverizer.jpg",
+    hasBrochure: true,
   },
   {
     id: "automatic-weighing-bagging-machine",
@@ -32,6 +34,7 @@ const products = [
     applications: ["Fertilizer", "Cement", "Chemicals"],
     href: "/products/automatic-weighing-bagging-machine",
     image: "/products/P-03_tyco-india-weighing-bagging-machine.jpg",
+    hasBrochure: true,
   },
   {
     id: "air-classifier",
@@ -144,10 +147,12 @@ export function ProductsSection() {
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm" className="w-full">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Brochure
-                    </Button>
+                    {product.hasBrochure && (
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Brochure
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

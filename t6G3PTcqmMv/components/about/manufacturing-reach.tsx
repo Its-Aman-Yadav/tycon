@@ -8,21 +8,15 @@ import { Factory, Building2, MapPin } from "lucide-react"
 const locations = [
   {
     icon: Factory,
-    type: "Works",
+    type: "Headquarters & Works",
     name: "Nagpur",
-    description: "Manufacturing facility and primary production base",
-  },
-  {
-    icon: Building2,
-    type: "Office",
-    name: "Pune",
-    description: "Regional sales and support office",
+    description: "Primary manufacturing facility and corporate headquarters",
   },
   {
     icon: MapPin,
     type: "Presence",
     name: "Multiple Branch Cities",
-    description: "Sales and service network across India",
+    description: "Sales and service network across all major Indian cities",
   },
 ]
 
@@ -48,7 +42,7 @@ export function ManufacturingReach() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {locations.map((location, index) => (
             <motion.div
               key={location.name}

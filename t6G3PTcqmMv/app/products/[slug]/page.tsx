@@ -37,7 +37,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     <main className="min-h-screen bg-background">
       <Header />
       <ProductDetailTemplate product={product} />
-      <RelatedProducts currentProductId={product.id} category={product.category} />
       <Footer />
     </main>
   )

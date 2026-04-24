@@ -4,7 +4,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
-import { ArrowRight, Download, Cog } from "lucide-react"
+import { ArrowRight, Download, Cog, ChevronDown } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { products } from "@/lib/products-data"
 
 const categories = [
@@ -36,14 +42,20 @@ export function ProductsGrid() {
         >
           <Link href={`/products/${product.id}`} className="group block h-full">
             <div className="h-full p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 flex flex-col">
-              {/* Product image */}
-              <div className="relative aspect-[4/3] rounded-xl bg-white overflow-hidden mb-4 border border-border group-hover:border-primary/20 transition-colors">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-contain p-2"
-                />
+              <div className="relative aspect-[4/3] rounded-xl bg-white overflow-hidden mb-4 border border-border group-hover:border-primary/20 transition-colors flex items-center justify-center">
+                {product.image ? (
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center p-4">
+                    <Cog className="w-12 h-12 text-primary/20 animate-spin-slow mb-2" />
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">Image Coming Soon</span>
+                  </div>
+                )}
               </div>
 
               <div className="flex-1">
@@ -79,16 +91,40 @@ export function ProductsGrid() {
                   View Details
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>
-                <button 
-                  onClick={(e) => {
-                    e.preventDefault()
-                    // Download brochure action
-                  }}
-                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors"
-                >
-                  <Download className="w-4 h-4" />
-                  Download Brochure
-                </button>
+                {product.hasBrochure && (
+                  <div onClick={(e) => e.preventDefault()}>
+                    {product.brochures && product.brochures.length > 0 ? (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button 
+                            className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors group"
+                          >
+                            <Download className="w-4 h-4" />
+                            Download Brochure
+                            <ChevronDown className="w-3 h-3 opacity-50 group-data-[state=open]:rotate-180 transition-transform" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-56 bg-card border-border">
+                          {product.brochures.map((brochure) => (
+                            <DropdownMenuItem key={brochure.url} asChild className="cursor-pointer hover:bg-muted focus:bg-muted">
+                              <a href={brochure.url} download className="flex items-center w-full">
+                                <Download className="w-4 h-4 mr-2 text-primary" />
+                                {brochure.title}
+                              </a>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    ) : (
+                      <button 
+                        className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors"
+                      >
+                        <Download className="w-4 h-4" />
+                        Download Brochure
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </Link>

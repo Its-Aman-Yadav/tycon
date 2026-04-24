@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
@@ -52,13 +53,20 @@ export function RelatedProducts({ currentProductId, category }: RelatedProductsP
             >
               <Link href={`/products/${product.id}`} className="group block">
                 <div className="p-6 rounded-2xl bg-background border border-border hover:border-primary/50 transition-all duration-300">
-                  <div className="aspect-[4/3] rounded-xl bg-gradient-to-br from-muted to-card flex items-center justify-center mb-4">
-                    <div className="text-center">
-                      <div className="w-14 h-14 mx-auto rounded-xl bg-primary/10 flex items-center justify-center mb-2">
-                        <Cog className="w-7 h-7 text-primary" />
+                  <div className="relative aspect-[4/3] rounded-xl bg-white border border-border flex items-center justify-center mb-4 overflow-hidden group-hover:border-primary/20 transition-colors">
+                    {product.image ? (
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        className="object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center p-4">
+                        <Cog className="w-12 h-12 text-primary/20 animate-spin-slow mb-2" />
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">Image Coming Soon</span>
                       </div>
-                      <span className="text-xs text-muted-foreground font-mono">{product.model}</span>
-                    </div>
+                    )}
                   </div>
                   <span className="text-xs text-primary font-medium uppercase tracking-wider">
                     {product.category.replace("-", " ")}

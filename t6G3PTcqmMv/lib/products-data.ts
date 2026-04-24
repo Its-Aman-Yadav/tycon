@@ -49,6 +49,7 @@ export interface Product {
   }[]
   applications: string[]
   industries: string[]
+  hasBrochure?: boolean
   // New structured technical specs table
   technicalSpecsTable?: {
     headers: string[]
@@ -62,7 +63,53 @@ export interface Product {
   variants: ProductVariant[]
   relatedClients: string[]
   image: string
+  brochures?: { title: string; url: string }[]
 }
+
+export interface Client {
+  id: number
+  name: string
+  logo: string
+  products: string[]
+}
+
+export const clients: Client[] = [
+  { id: 4, name: "Tata Steel", logo: "/clients/Tata%20Steel%20Logo.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
+  { id: 6, name: "SAIL", logo: "/clients/Sail%20Logio.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
+  { id: 7, name: "Jindal Steel", logo: "/clients/Jindal_Steel_Limited_Logo.png", products: ["jaw-crusher", "air-classifier"] },
+  { id: 8, name: "Dabur India", logo: "/clients/Dabur%20logo.png", products: ["pulveriser", "bagging"] },
+  { id: 9, name: "Hindustan Unilever", logo: "/clients/Hindustan_Unilever_Logo%201.png", products: ["bagging", "air-classifier"] },
+  { id: 10, name: "Aarti Industries", logo: "/clients/Arti%20logo.png", products: ["pulveriser", "bagging"] },
+  { id: 12, name: "Himalaya Wellness", logo: "/clients/Himalaya%20logo.png", products: ["pulveriser", "bagging"] },
+  { id: 13, name: "HIL Limited", logo: "/clients/HIL%20Limited%20logo.jfif", products: ["pulveriser", "jaw-crusher"] },
+  { id: 14, name: "AWL Agri Business", logo: "/clients/AWL_Agri_Business_Logo_COLOUR_RGB-2.png", products: ["bagging"] },
+  { id: 15, name: "Arya Vaidya Pharmacy", logo: "/clients/AVP%20logo.jfif", products: ["pulveriser", "air-classifier"] },
+  { id: 16, name: "Kores India", logo: "/clients/Kores%20Logo.jfif", products: ["pulveriser", "bagging"] },
+  { id: 17, name: "Usha Martin", logo: "/clients/Usha%20Martin%20Logo.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
+  { id: 18, name: "RHI Magnesita", logo: "/clients/RHI%20Magnesita%20Logo.png", products: ["pulveriser", "air-classifier"] },
+  { id: 21, name: "Kisanveer Satara", logo: "/clients/Kisanveer%20Satara%20SSKL.png", products: ["pulveriser", "bagging"] },
+  { id: 22, name: "Maithan Ceramic", logo: "/clients/Maithan%20Ceramic%20Ltd.png", products: ["pulveriser", "jaw-crusher"] },
+  { id: 23, name: "Natural Remedies", logo: "/clients/Natural%20remedies%20logo.jfif", products: ["pulveriser", "air-classifier"] },
+  { id: 24, name: "Oushadhi", logo: "/clients/Oushadhi%20logo.jfif", products: ["pulveriser", "bagging"] },
+  { id: 25, name: "TRL Krosaki", logo: "/clients/trl_krosaki_refractories_limited%20logo.jfif", products: ["pulveriser", "jaw-crusher"] },
+  { id: 26, name: "Shilpa Steel", logo: "/clients/Shilpa%20Steel%20Logo.png", products: ["jaw-crusher", "pulveriser"] },
+  { id: 27, name: "Welspun Energy", logo: "/clients/Welspun_Energy_Logo.png", products: ["bagging", "electromagnetic-vibrator"] },
+  { id: 28, name: "Sanghvi Food", logo: "/clients/Sanghvi%20food%20logo.webp", products: ["bagging", "pulveriser"] },
+  { id: 29, name: "Zenex (Ayurvet)", logo: "/clients/Zenex%20Logo%20(Ayurvet%20Ltd).png", products: ["pulveriser", "air-classifier"] },
+  { id: 30, name: "Adhunik Group", logo: "/clients/adhuniklogo.png", products: ["jaw-crusher", "pulveriser"] },
+  { id: 31, name: "Hira Group", logo: "/clients/hira-logo.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
+  { id: 32, name: "Parakh Agro", logo: "/clients/parakh-agro%20logo.png", products: ["bagging", "pulveriser"] },
+  { id: 33, name: "KCI", logo: "/clients/kci-logo.png", products: ["bagging", "air-classifier"] },
+  { id: 34, name: "ECOF", logo: "/clients/ecof-logo.png", products: ["pulveriser", "bagging"] },
+  { id: 35, name: "Rashmi Group", logo: "/clients/Rashmi%20Grp%20Logo.png", products: ["jaw-crusher", "pulveriser"] },
+  { id: 36, name: "Monnet Group", logo: "/clients/Monnet%20Grp%20logo.jpg", products: ["jaw-crusher", "electromagnetic-vibrator"] },
+  { id: 37, name: "Tamilnadu Magnesite", logo: "/clients/Tamilnadu%20magnesite%20logo.jfif", products: ["pulveriser", "jaw-crusher"] },
+  { id: 38, name: "Arya Vaidya Sala", logo: "/clients/Arya%20Vaidya%20sala%20kottakkal.jfif", products: ["pulveriser", "air-classifier"] },
+  { id: 39, name: "ACB", logo: "/clients/ACB%20logo.jfif", products: ["pulveriser", "jaw-crusher"] },
+  { id: 40, name: "Indian Herbs", logo: "/clients/Indian%20Herbs%20logo.jfif", products: ["pulveriser", "bagging"] },
+  { id: 41, name: "Pan Brand", logo: "/clients/Pan%20brand%20logo.jfif", products: ["pulveriser", "bagging"] },
+  { id: 42, name: "SP Group", logo: "/clients/SP%20Logo.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
+]
 
 export const products: Product[] = [
   {
@@ -84,8 +131,13 @@ export const products: Product[] = [
       { title: "Multiple Material Suitability", description: "Handles diverse materials from minerals to chemicals", icon: "layers" },
       { title: "Integrated System", description: "Combines grinding and classifying in single arrangement", icon: "link" }
     ],
-    applications: ["Bauxite", "Bentonite", "Chemicals", "Dolomite", "Lime Stone", "Minerals", "Turmeric", "Similar Industrial Materials"],
-    industries: ["Chemical", "Mineral Processing", "Food Processing", "Fertilizer", "Cement"],
+    applications: ["Chemicals", "Minerals", "Pharmaceuticals", "Food"],
+    industries: ["Chemical Processing", "Mineral Industry", "Food Processing"],
+    hasBrochure: true,
+    brochures: [
+      { title: "Technical Specifications - Page 1", url: "/brochure/P-C-01_Pulveriser_page1.png" },
+      { title: "Technical Specifications - Page 2", url: "/brochure/P-C-01_Pulveriser_page2.png" }
+    ],
     technicalSpecsTable: {
       headers: ["Model", "Diameter", "Rotor RPM", "No. of Hammers", "Main Motor HP", "Blower Motor HP", "Rotary Valve Motor HP"],
       rows: [
@@ -167,8 +219,13 @@ export const products: Product[] = [
       { title: "Low Heat Generation", description: "Minimal temperature rise during operation", icon: "zap" },
       { title: "Aroma Lock", description: "Special chamber design retains essential oils", icon: "droplet" }
     ],
-    applications: ["Spice Processing", "Food Industry", "Masala Manufacturing", "Ayurvedic Products", "Condiments", "Herbs", "Tea Processing"],
-    industries: ["Food Processing", "Spices", "Ayurveda", "Nutraceuticals", "Beverages"],
+    applications: ["Spices", "Food Processing", "Masala"],
+    industries: ["Food Industry", "Agriculture"],
+    hasBrochure: true,
+    brochures: [
+      { title: "Product Brochure - Page 1", url: "/brochure/P-C-08_Baginbag_page1.png" },
+      { title: "Product Brochure - Page 2", url: "/brochure/P-C-08_Baginbag_page2.png" }
+    ],
     technicalSpecs: {
       "Capacity Range": "25-1000 kg/hr",
       "Motor Power": "3-50 HP",
@@ -211,8 +268,13 @@ export const products: Product[] = [
       { title: "Data Logging", description: "Production tracking and quality reporting", icon: "database" },
       { title: "Quick Changeover", description: "Fast adjustment for different bag sizes", icon: "refresh" }
     ],
-    applications: ["Chemical Packaging", "Food Packaging", "Fertilizer Industry", "Cement Industry", "Agricultural Products", "Animal Feed", "Sugar Industry"],
-    industries: ["Chemicals", "Food", "Agriculture", "Cement", "Fertilizer"],
+    applications: ["Fertilizer", "Cement", "Chemicals", "Minerals"],
+    industries: ["Packaging", "Chemical Processing", "Construction"],
+    hasBrochure: true,
+    brochures: [
+      { title: "Technical Specifications - Page 1", url: "/brochure/P-C-03_Weighingandbaggingmachine_page1.png" },
+      { title: "Technical Specifications - Page 2", url: "/brochure/P-C-03_Weighingandbaggingmachine_page2.png" }
+    ],
     technicalSpecs: {
       "Weighing Range": "5-50 kg per bag",
       "Speed": "4-15 bags/min",
