@@ -458,6 +458,27 @@ export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
       )}
 
 
+      {/* Section 4.5.1: Post-Specification Description */}
+      {product.descriptionAfterSpecs && product.descriptionAfterSpecs.length > 0 && (
+        <section className="py-8 lg:py-12 bg-background">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6 max-w-4xl"
+            >
+              {product.descriptionAfterSpecs.map((paragraph, pIdx) => (
+                <p key={pIdx} className="text-lg text-muted-foreground leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* Section 4.6: Additional Technical Details (Legacy Image Format) */}
       {product.additionalRequirements && product.additionalRequirements.length > 0 && (
         <section className="py-16 lg:py-24 bg-muted/30">

@@ -71,6 +71,7 @@ export interface Product {
   performanceNote?: string
   meshMicronTable?: MeshMicronData[]
   additionalRequirements?: AdditionalRequirement[]
+  descriptionAfterSpecs?: string[]
   productGallery?: GalleryItem[]
   variants: ProductVariant[]
   relatedClients: string[]
@@ -353,6 +354,10 @@ export const products: Product[] = [
           "FR - gravity tube filling system for valve bags"
         ]
       }
+    ],
+    descriptionAfterSpecs: [
+      "The weigher can be combined with Tyco Open - Mouth Bag Placers or Valve - Bag Applicators. This combinations offers a fully automatic sequence of placing, weighing and filling in the case of open mouth bags, an automatic bag closing machine can be added to provide a fully automatic filling and closing system. Manufacturing materials are to suit specific products and their properties.",
+      "Tyco undertakes supply of Automatic Weighing & Bagging Machine along with turn key supply of material handling in various Combinations to suit customer requirements including Storage Silos, Bucket Elevators, Conveyors, Lorry Loaders, Stitching Machines etc."
     ],
     variants: [
       { model: "TAWB-25", capacity: "5-25 kg bags", power: "3 HP", description: "Standard bagging for small bags" },
