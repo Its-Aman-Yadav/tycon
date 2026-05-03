@@ -9,7 +9,7 @@ const offices = [
     type: "Manufacturing",
     address: "C-68, M.I.D.C. Industrial Area\nHingna, Nagpur – 440028\nMaharashtra, India",
     phone: "+91 83084 89200 / 94224 44120",
-    email: "sales@tyco-india.com",
+    emails: ["sales@tyco-india.com", "himanshu@tyco-india.com"],
     isPrimary: true,
   },
 ]
@@ -62,9 +62,17 @@ export function ContactInfo() {
             </div>
             <div className="flex gap-3">
               <Mail className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-              <a href={`mailto:${office.email}`} className="text-foreground hover:text-primary transition-colors">
-                {office.email}
-              </a>
+              <div>
+                {office.emails.map((email) => (
+                  <a 
+                    key={email} 
+                    href={`mailto:${email}`} 
+                    className="text-foreground hover:text-primary transition-colors block"
+                  >
+                    {email}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -83,6 +91,9 @@ export function ContactInfo() {
               <a href="tel:+919422444120" className="text-foreground hover:text-primary transition-colors block">
                 +91 94224 44120
               </a>
+              <a href="tel:+919822057602" className="text-foreground hover:text-primary transition-colors block">
+                +91 98220 57602
+              </a>
             </div>
           </div>
           <div className="flex gap-3">
@@ -91,8 +102,8 @@ export function ContactInfo() {
               <a href="mailto:sales@tyco-india.com" className="text-foreground hover:text-primary transition-colors block">
                 sales@tyco-india.com
               </a>
-              <a href="mailto:himanshu@tyco-india.com" className="text-foreground hover:text-primary transition-colors block">
-                himanshu@tyco-india.com
+              <a href="mailto:ssv@tyco-india.com" className="text-foreground hover:text-primary transition-colors block">
+                ssv@tyco-india.com
               </a>
             </div>
           </div>

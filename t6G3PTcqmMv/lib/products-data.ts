@@ -32,6 +32,12 @@ export interface AdditionalRequirement {
   items: string[]
 }
 
+export interface GalleryItem {
+  title: string
+  description: string
+  image: string
+}
+
 export interface Product {
   id: string
   category: string
@@ -58,8 +64,14 @@ export interface Product {
   // Legacy key-value specs
   technicalSpecs?: Record<string, string>
   performanceData: PerformanceSpec[]
+  performanceTable?: {
+    headers: string[]
+    rows: TechnicalSpecRow[]
+  }
+  performanceNote?: string
   meshMicronTable?: MeshMicronData[]
   additionalRequirements?: AdditionalRequirement[]
+  productGallery?: GalleryItem[]
   variants: ProductVariant[]
   relatedClients: string[]
   image: string
@@ -74,41 +86,69 @@ export interface Client {
 }
 
 export const clients: Client[] = [
-  { id: 4, name: "Tata Steel", logo: "/clients/Tata%20Steel%20Logo.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
-  { id: 6, name: "SAIL", logo: "/clients/Sail%20Logio.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
-  { id: 7, name: "Jindal Steel", logo: "/clients/Jindal_Steel_Limited_Logo.png", products: ["jaw-crusher", "air-classifier"] },
-  { id: 8, name: "Dabur India", logo: "/clients/Dabur%20logo.png", products: ["pulveriser", "bagging"] },
-  { id: 9, name: "Hindustan Unilever", logo: "/clients/Hindustan_Unilever_Logo%201.png", products: ["bagging", "air-classifier"] },
-  { id: 10, name: "Aarti Industries", logo: "/clients/Arti%20logo.png", products: ["pulveriser", "bagging"] },
-  { id: 12, name: "Himalaya Wellness", logo: "/clients/Himalaya%20logo.png", products: ["pulveriser", "bagging"] },
-  { id: 13, name: "HIL Limited", logo: "/clients/HIL%20Limited%20logo.jfif", products: ["pulveriser", "jaw-crusher"] },
-  { id: 14, name: "AWL Agri Business", logo: "/clients/AWL_Agri_Business_Logo_COLOUR_RGB-2.png", products: ["bagging"] },
-  { id: 15, name: "Arya Vaidya Pharmacy", logo: "/clients/AVP%20logo.jfif", products: ["pulveriser", "air-classifier"] },
-  { id: 16, name: "Kores India", logo: "/clients/Kores%20Logo.jfif", products: ["pulveriser", "bagging"] },
-  { id: 17, name: "Usha Martin", logo: "/clients/Usha%20Martin%20Logo.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
+  { id: 4, name: "Tata Steel", logo: "/clients/Tata%20Steel%20Logo.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 6, name: "SAIL", logo: "/clients/Sail%20Logio.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 7, name: "Jindal Steel", logo: "/clients/Jindal_Steel_Limited_Logo.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 8, name: "Dabur India", logo: "/clients/Dabur%20logo.png", products: ["pulveriser"] },
+  { id: 9, name: "Hindustan Unilever", logo: "/clients/Hindustan_Unilever_Logo%201.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 10, name: "Aarti Industries", logo: "/clients/Arti%20logo.png", products: ["pulveriser"] },
+  { id: 12, name: "Himalaya Wellness", logo: "/clients/Himalaya%20logo.png", products: ["pulveriser"] },
+  { id: 13, name: "HIL Limited", logo: "/clients/HIL%20Limited%20logo.jfif", products: ["pulveriser"] },
+  { id: 14, name: "AWL Agri Business", logo: "/clients/AWL_Agri_Business_Logo_COLOUR_RGB-2.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 15, name: "Arya Vaidya Pharmacy", logo: "/clients/AVP%20logo.jfif", products: ["pulveriser"] },
+  { id: 16, name: "Kores India", logo: "/clients/Kores%20Logo.jfif", products: ["air-classifier"] },
+  { id: 17, name: "Usha Martin", logo: "/clients/Usha%20Martin%20Logo.png", products: ["automatic-weighing-bagging-machine"] },
   { id: 18, name: "RHI Magnesita", logo: "/clients/RHI%20Magnesita%20Logo.png", products: ["pulveriser", "air-classifier"] },
-  { id: 21, name: "Kisanveer Satara", logo: "/clients/Kisanveer%20Satara%20SSKL.png", products: ["pulveriser", "bagging"] },
-  { id: 22, name: "Maithan Ceramic", logo: "/clients/Maithan%20Ceramic%20Ltd.png", products: ["pulveriser", "jaw-crusher"] },
-  { id: 23, name: "Natural Remedies", logo: "/clients/Natural%20remedies%20logo.jfif", products: ["pulveriser", "air-classifier"] },
-  { id: 24, name: "Oushadhi", logo: "/clients/Oushadhi%20logo.jfif", products: ["pulveriser", "bagging"] },
-  { id: 25, name: "TRL Krosaki", logo: "/clients/trl_krosaki_refractories_limited%20logo.jfif", products: ["pulveriser", "jaw-crusher"] },
-  { id: 26, name: "Shilpa Steel", logo: "/clients/Shilpa%20Steel%20Logo.png", products: ["jaw-crusher", "pulveriser"] },
-  { id: 27, name: "Welspun Energy", logo: "/clients/Welspun_Energy_Logo.png", products: ["bagging", "electromagnetic-vibrator"] },
-  { id: 28, name: "Sanghvi Food", logo: "/clients/Sanghvi%20food%20logo.webp", products: ["bagging", "pulveriser"] },
-  { id: 29, name: "Zenex (Ayurvet)", logo: "/clients/Zenex%20Logo%20(Ayurvet%20Ltd).png", products: ["pulveriser", "air-classifier"] },
-  { id: 30, name: "Adhunik Group", logo: "/clients/adhuniklogo.png", products: ["jaw-crusher", "pulveriser"] },
-  { id: 31, name: "Hira Group", logo: "/clients/hira-logo.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
-  { id: 32, name: "Parakh Agro", logo: "/clients/parakh-agro%20logo.png", products: ["bagging", "pulveriser"] },
-  { id: 33, name: "KCI", logo: "/clients/kci-logo.png", products: ["bagging", "air-classifier"] },
-  { id: 34, name: "ECOF", logo: "/clients/ecof-logo.png", products: ["pulveriser", "bagging"] },
-  { id: 35, name: "Rashmi Group", logo: "/clients/Rashmi%20Grp%20Logo.png", products: ["jaw-crusher", "pulveriser"] },
-  { id: 36, name: "Monnet Group", logo: "/clients/Monnet%20Grp%20logo.jpg", products: ["jaw-crusher", "electromagnetic-vibrator"] },
-  { id: 37, name: "Tamilnadu Magnesite", logo: "/clients/Tamilnadu%20magnesite%20logo.jfif", products: ["pulveriser", "jaw-crusher"] },
-  { id: 38, name: "Arya Vaidya Sala", logo: "/clients/Arya%20Vaidya%20sala%20kottakkal.jfif", products: ["pulveriser", "air-classifier"] },
-  { id: 39, name: "ACB", logo: "/clients/ACB%20logo.jfif", products: ["pulveriser", "jaw-crusher"] },
-  { id: 40, name: "Indian Herbs", logo: "/clients/Indian%20Herbs%20logo.jfif", products: ["pulveriser", "bagging"] },
-  { id: 41, name: "Pan Brand", logo: "/clients/Pan%20brand%20logo.jfif", products: ["pulveriser", "bagging"] },
-  { id: 42, name: "SP Group", logo: "/clients/SP%20Logo.png", products: ["jaw-crusher", "electromagnetic-vibrator"] },
+  { id: 21, name: "Kisanveer Satara", logo: "/clients/Kisanveer%20Satara%20SSKL.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 22, name: "Maithan Ceramic", logo: "/clients/Maithan%20Ceramic%20Ltd.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 23, name: "Natural Remedies", logo: "/clients/Natural%20remedies%20logo.jfif", products: ["pulveriser"] },
+  { id: 24, name: "Oushadhi", logo: "/clients/Oushadhi%20logo.jfif", products: ["pulveriser"] },
+  { id: 25, name: "TRL Krosaki", logo: "/clients/trl_krosaki_refractories_limited%20logo.jfif", products: ["air-classifier"] },
+  { id: 26, name: "Shilpa Steel", logo: "/clients/Shilpa%20Steel%20Logo.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 27, name: "Welspun", logo: "/clients/Welspun_Energy_Logo.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 28, name: "Sanghvi Food", logo: "/clients/Sanghvi%20food%20logo.webp", products: ["pulveriser"] },
+  { id: 29, name: "Zenex (Ayurvet)", logo: "/clients/Zenex%20Logo%20(Ayurvet%20Ltd).png", products: ["pulveriser"] },
+  { id: 30, name: "Adhunik Group", logo: "/clients/adhuniklogo.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 31, name: "Hira Group", logo: "/clients/hira-logo.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 32, name: "Parakh Agro", logo: "/clients/parakh-agro%20logo.png", products: ["pulveriser"] },
+  { id: 33, name: "KCI", logo: "/clients/kci-logo.png", products: ["pulveriser"] },
+  { id: 34, name: "ECOF", logo: "/clients/ecof-logo.png", products: ["jaw-crusher"] },
+  { id: 35, name: "Rashmi Group", logo: "/clients/Rashmi%20Grp%20Logo.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 36, name: "Monnet Group", logo: "/clients/Monnet%20Grp%20logo.jpg", products: ["automatic-weighing-bagging-machine"] },
+  { id: 37, name: "Tamilnadu Magnesite", logo: "/clients/Tamilnadu%20magnesite%20logo.jfif", products: ["pulveriser"] },
+  { id: 38, name: "Arya Vaidya Sala", logo: "/clients/Arya%20Vaidya%20sala%20kottakkal.jfif", products: ["pulveriser"] },
+  { id: 39, name: "ACB India Ltd", logo: "/clients/ACB%20logo.jfif", products: ["electromagnetic-vibrator"] },
+  { id: 40, name: "Indian Herbs", logo: "/clients/Indian%20Herbs%20logo.jfif", products: ["pulveriser"] },
+  { id: 41, name: "Pan Brand", logo: "/clients/Pan%20brand%20logo.jfif", products: ["pulveriser"] },
+  { id: 42, name: "SP Group", logo: "/clients/SP%20Logo.png", products: ["jaw-crusher"] },
+  { id: 43, name: "IOCL", logo: "", products: ["pulveriser", "air-classifier"] },
+  { id: 44, name: "Hyderabad Industries Limited", logo: "/clients/HIL%20logo.jfif", products: ["pulveriser"] },
+  { id: 45, name: "Lakshini Mineral Indus", logo: "", products: ["pulveriser"] },
+  { id: 46, name: "Raja Mineral Industry", logo: "", products: ["pulveriser"] },
+  { id: 47, name: "Narasemha Mineral Indus", logo: "", products: ["pulveriser"] },
+  { id: 48, name: "Shridhar Mineral Indus", logo: "", products: ["pulveriser"] },
+  { id: 49, name: "Sri Balaji Minerals", logo: "", products: ["pulveriser"] },
+  { id: 50, name: "Modern Industries", logo: "", products: ["pulveriser"] },
+  { id: 51, name: "Shankar Industries", logo: "", products: ["pulveriser"] },
+  { id: 52, name: "Shree Bhagyalaxmi Foods", logo: "", products: ["pulveriser"] },
+  { id: 53, name: "ITC Limited", logo: "", products: ["pulveriser"] },
+  { id: 54, name: "Sri Gowrishankar Industries", logo: "", products: ["pulveriser"] },
+  { id: 55, name: "Rajdhani Flour Mills", logo: "", products: ["pulveriser"] },
+  { id: 56, name: "Abhijeet", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 57, name: "Adani", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 58, name: "Bhushan", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 59, name: "Graphite India Limited", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 60, name: "Vine Engineers", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 61, name: "Visa Steel and Power Limited", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 62, name: "Vizag Refractories Private Limited", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 63, name: "Welspun Steel & Power Ltd", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 64, name: "Dimple chemicals and Services Pvt Ltd", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 65, name: "Asian paint", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 66, name: "Bihar Foundary", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 67, name: "Chemical Construction International", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 68, name: "Kanoria C", logo: "", products: ["jaw-crusher"] },
+  { id: 69, name: "TVS", logo: "", products: ["jaw-crusher"] },
+  { id: 70, name: "Grasim", logo: "", products: ["electromagnetic-vibrator"] },
 ]
 
 export const products: Product[] = [
@@ -116,7 +156,7 @@ export const products: Product[] = [
     id: "pulveriser",
     category: "grinding",
     name: "Pulveriser",
-    model: "TPL Series",
+    model: "HP Series",
     tagline: "Integrated Grinding and Classification System",
     shortSummary: "Industrial pulveriser for grinding and classification with flexible product fineness control, dust-free operation, and dependable performance.",
     description: "Industrial pulveriser for grinding and classification with flexible product fineness control, dust-free operation, and dependable performance.",
@@ -139,23 +179,40 @@ export const products: Product[] = [
       { title: "Technical Specifications - Page 2", url: "/brochure/P-C-01_Pulveriser_page2.png" }
     ],
     technicalSpecsTable: {
-      headers: ["Model", "Diameter", "Rotor RPM", "No. of Hammers", "Main Motor HP", "Blower Motor HP", "Rotary Valve Motor HP"],
+      headers: ["Model", "Size of Chamber", "Number of Hammers", "Mill RPM", "Motor HP"],
       rows: [
-        { parameter: "TPL-18", values: ["18\"", "4500", "12", "7.5-10", "3-5", "0.5"] },
-        { parameter: "TPL-24", values: ["24\"", "3600", "16", "15-20", "5-7.5", "1"] },
-        { parameter: "TPL-30", values: ["30\"", "3000", "20", "25-40", "7.5-10", "1.5"] },
-        { parameter: "TPL-36", values: ["36\"", "2800", "24", "40-60", "10-15", "2"] },
-        { parameter: "TPL-42", values: ["42\"", "2400", "28", "60-100", "15-20", "3"] }
+        { parameter: "HP-8", values: ["20\"", "8", "3545", "20"] },
+        { parameter: "HP-18", values: ["32\"", "18", "1770", "40/50"] },
+        { parameter: "HP-34", values: ["40\"", "18", "1500", "60/75"] },
+        { parameter: "HP-40", values: ["42\"", "18", "1570", "75"] }
       ]
     },
-    performanceData: [
-      { material: "Dolomite", fineness: "200 mesh", outputRange: "300-500 kg/hr" },
-      { material: "Calcium Carbite", fineness: "300 mesh", outputRange: "200-400 kg/hr" },
-      { material: "Calcite", fineness: "250 mesh", outputRange: "250-450 kg/hr" },
-      { material: "Bauxite", fineness: "150 mesh", outputRange: "400-600 kg/hr" },
-      { material: "Chemicals", fineness: "100-300 mesh", outputRange: "150-500 kg/hr" },
-      { material: "Minerals (General)", fineness: "100-400 mesh", outputRange: "100-600 kg/hr" }
-    ],
+    performanceData: [],
+    performanceNote: "The output capacity of Tyco Pulveriser varies widely depending on the type of material, feed size and moisture content. Given below is the table indicating the pulverizing capacity on average basis however the capacity figures will vary from case to case depending upon several factors. These figures are meant for guidance only. The output of pulverizer will reduce with the increase in fineness.",
+    performanceTable: {
+      headers: ["Material For Grinding", "20\"", "32\"", "40\"", "42\""],
+      rows: [
+        { parameter: "Bauxite", values: ["200", "500", "750", "850"] },
+        { parameter: "Bentonite", values: ["300", "750", "1050", "1200"] },
+        { parameter: "Besan", values: ["250", "550", "850", "1100"] },
+        { parameter: "Calcite", values: ["250", "550", "800", "900"] },
+        { parameter: "Chalk", values: ["250", "600", "950", "1100"] },
+        { parameter: "China Clay", values: ["250", "600", "900", "1150"] },
+        { parameter: "Chromites", values: ["100", "200", "300", "400"] },
+        { parameter: "Coal", values: ["250", "500", "750", "850"] },
+        { parameter: "Graphite", values: ["200", "500", "800", "900"] },
+        { parameter: "Gypsum", values: ["250", "500", "850", "1000"] },
+        { parameter: "Hydrated Lime", values: ["300", "600", "900", "1050"] },
+        { parameter: "Lime Stone", values: ["300", "600", "900", "1050"] },
+        { parameter: "Ochre's", values: ["250", "600", "850", "1050"] },
+        { parameter: "Pyrophyllite", values: ["250", "600", "850", "1050"] },
+        { parameter: "Soap Stone", values: ["300", "700", "1000", "1200"] },
+        { parameter: "Magnesite", values: ["200", "500", "750", "850"] },
+        { parameter: "Herbs", values: ["60", "120", "175", "220"] },
+        { parameter: "Dolomite", values: ["350", "750", "1050", "1200"] },
+        { parameter: "Turmeric", values: ["-", "250", "400", "450"] }
+      ]
+    },
     meshMicronTable: [
       { mesh: "100", microns: "149" },
       { mesh: "150", microns: "105" },
@@ -164,41 +221,13 @@ export const products: Product[] = [
       { mesh: "300", microns: "53" },
       { mesh: "400", microns: "37" }
     ],
-    additionalRequirements: [
-      {
-        title: "Electrical Requirement",
-        items: [
-          "Power supply: 415V, 3-Phase, 50 Hz",
-          "Starter type: Star-Delta for main motor",
-          "Control panel: With ammeter, voltmeter, and overload protection"
-        ]
-      },
-      {
-        title: "Space Requirement",
-        items: [
-          "Floor area varies by model (contact for layout drawing)",
-          "Recommended headroom: Minimum 3.5 to 5 meters depending on model",
-          "Allow space for maintenance access on all sides"
-        ]
-      },
-      {
-        title: "Installation Notes",
-        items: [
-          "Foundation: Isolated concrete foundation recommended",
-          "Vibration dampening: Anti-vibration pads provided",
-          "Ducting: Customer to arrange ducting from blower to bag filter",
-          "Commissioning support available from TYCO engineering team"
-        ]
-      }
-    ],
     variants: [
-      { model: "TPL-18", diameter: "18\"", rotorRpm: "4500", hammers: 12, mainMotorHp: "7.5-10", blowerMotorHp: "3-5", rotaryValveMotorHp: "0.5", description: "Compact model for small-scale operations" },
-      { model: "TPL-24", diameter: "24\"", rotorRpm: "3600", hammers: 16, mainMotorHp: "15-20", blowerMotorHp: "5-7.5", rotaryValveMotorHp: "1", description: "Mid-range model for medium production" },
-      { model: "TPL-30", diameter: "30\"", rotorRpm: "3000", hammers: 20, mainMotorHp: "25-40", blowerMotorHp: "7.5-10", rotaryValveMotorHp: "1.5", description: "High-capacity model for larger operations" },
-      { model: "TPL-36", diameter: "36\"", rotorRpm: "2800", hammers: 24, mainMotorHp: "40-60", blowerMotorHp: "10-15", rotaryValveMotorHp: "2", description: "Industrial-scale grinding system" },
-      { model: "TPL-42", diameter: "42\"", rotorRpm: "2400", hammers: 28, mainMotorHp: "60-100", blowerMotorHp: "15-20", rotaryValveMotorHp: "3", description: "Heavy-duty model for maximum throughput" }
+      { model: "HP-8", diameter: "20\"", rotorRpm: "3545", hammers: 8, mainMotorHp: "20", description: "Compact and efficient pulveriser for small to medium scale operations." },
+      { model: "HP-18", diameter: "32\"", rotorRpm: "1770", hammers: 18, mainMotorHp: "40/50", description: "Versatile industrial pulveriser for various grinding applications." },
+      { model: "HP-34", diameter: "40\"", rotorRpm: "1500", hammers: 18, mainMotorHp: "60/75", description: "High-capacity grinding system for industrial production lines." },
+      { model: "HP-40", diameter: "42\"", rotorRpm: "1570", hammers: 18, mainMotorHp: "75", description: "Heavy-duty pulveriser designed for maximum throughput." }
     ],
-    relatedClients: ["Tata Chemicals", "Hindustan Unilever", "ITC Limited", "Pidilite Industries"],
+    relatedClients: ["Dabur India", "Himalaya Wellness", "IOCL", "RHI Magnesita", "Zenex (Ayurvet)", "ITC Limited"],
     image: "/products/P-01_tyco-india-pulverizer.jpg"
   },
   {
@@ -227,19 +256,18 @@ export const products: Product[] = [
       { title: "Product Brochure - Page 2", url: "/brochure/P-C-08_Baginbag_page2.png" }
     ],
     technicalSpecs: {
-      "Capacity Range": "25-1000 kg/hr",
-      "Motor Power": "3-50 HP",
-      "Fineness Range": "40-200 mesh",
-      "Construction Material": "SS304/SS316 Food Grade",
-      "Temperature Rise": "<10°C",
-      "Certifications": "FSSAI Compliant"
+      "Capacity": "500-600 Kg/Hour",
+      "Main Shaft": "EN-8",
+      "Mill RPM": "2400 RPM",
+      "Motor": "50/60 HP",
+      "No. of Hammers": "24",
+      "Material of Main Housing": "MS",
+      "Main Shaft Bearing": "SKF"
     },
     performanceData: [
-      { material: "Red Chilli", fineness: "60-80 mesh", outputRange: "100-200 kg/hr" },
-      { material: "Turmeric", fineness: "80-100 mesh", outputRange: "80-150 kg/hr" },
-      { material: "Coriander", fineness: "60-80 mesh", outputRange: "120-220 kg/hr" },
-      { material: "Cumin", fineness: "60-80 mesh", outputRange: "100-180 kg/hr" },
-      { material: "Mixed Spices", fineness: "60-100 mesh", outputRange: "80-200 kg/hr" }
+      { material: "Chilli", fineness: "Standard", outputRange: "500 kg/hr" },
+      { material: "Coriander", fineness: "Standard", outputRange: "650 kg/hr" },
+      { material: "Cumin", fineness: "Standard", outputRange: "450 kg/hr" }
     ],
     variants: [
       { model: "TSP-25", capacity: "25-75 kg/hr", power: "3-5 HP", description: "Small batch processing for artisan producers" },
@@ -268,25 +296,63 @@ export const products: Product[] = [
       { title: "Data Logging", description: "Production tracking and quality reporting", icon: "database" },
       { title: "Quick Changeover", description: "Fast adjustment for different bag sizes", icon: "refresh" }
     ],
-    applications: ["Fertilizer", "Cement", "Chemicals", "Minerals"],
+    applications: [
+      "Fertilizer (Granular - Crystalline)",
+      "Sugar",
+      "Sponge Iron",
+      "Plastic Powder",
+      "Salt",
+      "Coffee Granules",
+      "Washing Powder",
+      "Sand Quartz",
+      "Chemicals & Minerals",
+      "Plastic Granules",
+      "Grain Products",
+      "Tea",
+      "Quartz",
+      "Coarse Meal"
+    ],
     industries: ["Packaging", "Chemical Processing", "Construction"],
     hasBrochure: true,
     brochures: [
       { title: "Technical Specifications - Page 1", url: "/brochure/P-C-03_Weighingandbaggingmachine_page1.png" },
       { title: "Technical Specifications - Page 2", url: "/brochure/P-C-03_Weighingandbaggingmachine_page2.png" }
     ],
-    technicalSpecs: {
-      "Weighing Range": "5-50 kg per bag",
-      "Speed": "4-15 bags/min",
-      "Accuracy": "±0.1-0.2%",
-      "Bag Types": "PP/HDPE/Paper/Jute",
-      "Control System": "PLC with HMI",
-      "Power Supply": "415V, 3-Phase"
-    },
-    performanceData: [
-      { material: "Powder Products", fineness: "5-25 kg bags", outputRange: "8-12 bags/min" },
-      { material: "Granular Products", fineness: "10-50 kg bags", outputRange: "6-10 bags/min" },
-      { material: "Free-flowing Materials", fineness: "25-50 kg bags", outputRange: "4-8 bags/min" }
+    performanceData: [],
+    additionalRequirements: [
+      {
+        title: "Tyco Weighing & Bagging Product Range Includes",
+        items: [
+          "Net / Gross Weigher– Electro Mechanical along with electrical control panel.",
+          "Net / Gross Weigher– Electronic Microprocessosr & Load Cell based.",
+          "Twin Weigher Electromechanical & Electronic Microprocessor based.",
+          "Net multi-dumping weigher up to 1.5-ton capacity bags."
+        ]
+      },
+      {
+        title: "Depending upon the Application One of the Following Dosing System is Adopted",
+        items: []
+      },
+      {
+        title: "Types Of Dosing",
+        items: [
+          "PE – Shutter",
+          "RQ - PE roller dosing",
+          "VF - PE chute dosing",
+          "S - PE screw dosing",
+          "VD - valve dosing",
+          "BD - PE belt dosing"
+        ]
+      },
+      {
+        title: "Filling Systems",
+        items: [
+          "OS - bag - filling spout with clamp for open mouth bags",
+          "VS - screw - type filling system for valve bags",
+          "SB - centrifugal belt filling system for valve bags",
+          "FR - gravity tube filling system for valve bags"
+        ]
+      }
     ],
     variants: [
       { model: "TAWB-25", capacity: "5-25 kg bags", power: "3 HP", description: "Standard bagging for small bags" },
@@ -294,7 +360,7 @@ export const products: Product[] = [
       { model: "TAWB-TWIN", capacity: "Dual line system", power: "7.5 HP", description: "High-speed dual bagging line" },
       { model: "TAWB-AUTO", capacity: "Fully automatic line", power: "10 HP", description: "Complete packaging automation" }
     ],
-    relatedClients: ["Coromandel International", "IFFCO", "Ambuja Cement", "UltraTech Cement"],
+    relatedClients: ["Tata Steel", "SAIL", "Jindal Steel", "Hindustan Unilever", "AWL Agri Business", "Usha Martin"],
     image: "/products/P-03_tyco-india-weighing-bagging-machine.jpg"
   },
   {
@@ -308,15 +374,36 @@ export const products: Product[] = [
     overview: "The TYCO Air Classifier delivers accurate particle size separation through advanced aerodynamic principles. The system operates continuously with minimal energy consumption and maintenance requirements. It integrates seamlessly with grinding systems to create closed-loop circuits for precise product specifications.",
     specs: ["Precise Separation", "No Moving Parts", "Continuous Operation"],
     features: [
+      { title: "Strong Construction", description: "Heavy-duty design ensuring high durability and long service life", icon: "shield" },
+      { title: "Minimise Loss of Fines", description: "Efficient air flow design to prevent material loss during classification", icon: "wind" },
+      { title: "Special Liners", description: "Replaceable liners for handling abrasive materials and reducing wear", icon: "layers" },
       { title: "Accurate Classification", description: "Precise cut points from 2-150 microns", icon: "target" },
       { title: "Low Energy", description: "Efficient air flow design reduces power needs", icon: "zap" },
       { title: "Minimal Maintenance", description: "Few moving parts for reliable operation", icon: "wrench" },
-      { title: "Continuous Operation", description: "Non-stop classification for production lines", icon: "repeat" },
-      { title: "System Integration", description: "Works with grinding systems in closed circuits", icon: "link" },
-      { title: "Adjustable Cut Point", description: "Fine-tunable separation parameters", icon: "sliders" }
+      { title: "Continuous Operation", description: "Non-stop classification for production lines", icon: "repeat" }
     ],
-    applications: ["Mineral Processing", "Chemical Industry", "Pharmaceutical", "Powder Coatings", "Ceramics", "Calcium Carbonate", "Talc Processing"],
-    industries: ["Mining", "Chemicals", "Pharmaceuticals", "Paints", "Ceramics"],
+    applications: [
+      "Barites",
+      "Chalk",
+      "China Clay",
+      "Coal",
+      "Fly Ash",
+      "Food - Sugar, Cocoa, milk powder, corn, wheat starch, soya bean meal",
+      "Gypsum",
+      "Limestone",
+      "Hydrated Lime",
+      "Portland cement",
+      "Silica Sand",
+      "Soya Flour"
+    ],
+    industries: ["Mining", "Chemicals", "Pharmaceuticals", "Ceramics", "Cement", "Silica", "Food powders"],
+    technicalSpecsTable: {
+      headers: ["Motor Hp", "Feed Inlet Dia", "Approx. Overall Dimensions", "Approx. Discharge Height"],
+      rows: [
+        { parameter: "AC - 30", values: ["7.5", "64 mm", "1 m x 1 m x 2.3 m Ht", "1.3 Mtrs"] },
+        { parameter: "AC - 72", values: ["15", "102 mm", "2.2 m x 2.2 m x 3.9 m Ht", "1.3 Mtrs"] }
+      ]
+    },
     technicalSpecs: {
       "Capacity Range": "100-10000 kg/hr",
       "Cut Point": "2-150 microns",
@@ -325,19 +412,14 @@ export const products: Product[] = [
       "Construction": "MS/SS options",
       "Drive System": "Direct/Belt Drive"
     },
-    performanceData: [
-      { material: "Calcium Carbonate", fineness: "10 microns", outputRange: "500-1500 kg/hr" },
-      { material: "Talc", fineness: "20 microns", outputRange: "400-1200 kg/hr" },
-      { material: "Kaolin", fineness: "5 microns", outputRange: "300-800 kg/hr" },
-      { material: "Chemical Powders", fineness: "10-50 microns", outputRange: "500-2000 kg/hr" }
-    ],
+    performanceData: [],
     variants: [
       { model: "TAC-500", capacity: "100-500 kg/hr", power: "15-25 kW", description: "Compact classifier for small operations" },
       { model: "TAC-1500", capacity: "500-1500 kg/hr", power: "30-50 kW", description: "Mid-capacity classification" },
       { model: "TAC-3000", capacity: "1500-5000 kg/hr", power: "60-100 kW", description: "High-throughput classifier" },
       { model: "TAC-5000", capacity: "5000-10000 kg/hr", power: "100-150 kW", description: "Industrial-scale separation" }
     ],
-    relatedClients: ["Tata Steel", "JSW Steel", "ACC Cement", "Birla White"],
+    relatedClients: ["IOCL", "Kores India", "RHI Magnesita", "TRL Krosaki"],
     image: "/products/P-04_tyco-india-air-classifiers.jpg"
   },
   {
@@ -360,27 +442,37 @@ export const products: Product[] = [
     ],
     applications: ["Bulk Material Handling", "Process Industries", "Mining", "Food Processing", "Cement Plants", "Power Plants", "Steel Industry"],
     industries: ["Cement", "Steel", "Mining", "Power", "Food Processing"],
-    technicalSpecs: {
-      "Conveyor Length": "Up to 100m",
-      "Elevator Height": "Up to 40m",
-      "Capacity": "1-500 TPH",
-      "Construction Material": "MS/SS",
-      "Drive Options": "Geared Motor/VFD",
-      "Control": "Manual/PLC"
-    },
-    performanceData: [
-      { material: "Bulk Powders", fineness: "Bucket Elevator", outputRange: "10-100 TPH" },
-      { material: "Granules", fineness: "Screw Conveyor", outputRange: "5-50 TPH" },
-      { material: "Aggregates", fineness: "Belt Conveyor", outputRange: "50-500 TPH" }
-    ],
+    performanceData: [],
     variants: [
-      { model: "TMH-BE", capacity: "Bucket Elevator", power: "2-50 HP", description: "Vertical material transport systems" },
-      { model: "TMH-SC", capacity: "Screw Conveyor", power: "1-30 HP", description: "Horizontal/inclined material movement" },
-      { model: "TMH-BC", capacity: "Belt Conveyor", power: "2-100 HP", description: "Long-distance bulk transport" },
-      { model: "TMH-PC", capacity: "Pneumatic Conveying", power: "10-100 HP", description: "Enclosed dust-free conveying" }
+      { model: "Inclined belt conveyor", description: "A very useful material handling system for transferring Material from ground level to upper level." },
+      { model: "Conveyors", description: "Modular design for logistics handling in warehouses." },
+      { model: "Truck Loader and Unloader", description: "Unique design for loading and unloading of 50 kg bags." },
+      { model: "Bag stacker", description: "Most useful for stacking 50 kg bags with reduced manpower." }
     ],
     relatedClients: ["Ultratech Cement", "Shree Cement", "Dalmia Cement", "JK Cement"],
-    image: "/products/P-05_tyco-india-material-handling-equipments.jpg"
+    image: "/products/P-05_tyco-india-material-handling-equipments.jpg",
+    productGallery: [
+      {
+        title: "Inclined belt conveyor",
+        description: "A very useful material handling system for transferring Material from ground level to upper level. Each conveyor is designed according to their load carrying capacity.\n\nModular and light in weight with imported belt for proper grip to avoid slide down of material. Degree of Inclination varies from 1° to 45° depending on the requirement of the customer and material characteristics.\n\nCan be used for both up and down movement.",
+        image: "/material/inclined-belt.jpg"
+      },
+      {
+        title: "Conveyors",
+        description: "Modular design and customised features and performance makes it a top most favorite with customers who wants to handle the logistics (50 Kg Bags of grain, Soya, DOC, Sugar etc) in the warehouse where after automatic weighing and bagging, bags are lifted, diverted, raised, lowered for either loading in trucks or for stacking in the storage areas.",
+        image: "/material/conveyors.jpg"
+      },
+      {
+        title: "Truck Loader and Unloader",
+        description: "Its unique design for loading and unloading of 50 kg bags both jute and hdpe, makes it a favorite in Soya grain, sugar industries.\n\nHaving a minimum feeding height of 300 mm and a maximum 3 Meter height makes it very competent for loading to and unloading from the Trucks.\n\nEntire conveyor is mounted on an easily maneuverable trolley. A 2 HP Hydraulic Power Pack takes care of the raising and lowering. Imported German make control Panel with IP 65 enclosure and Variable Frequency Drive of reputed make ensures efficiency. Designed for 5 TPH or 100 bags of 50 kg per hour.",
+        image: "/material/truck-loader.jpg"
+      },
+      {
+        title: "Bag stacker",
+        description: "Tyco Bag Stackers are most useful for stacking 50 kg Soya (seed or DOC), grains, Sugar bags either jute of hdpe.\n\nWith a top height of 15 feet it reduces the time and manpower considerably and become an indispensable part of storing activities.\n\nEasy maneuverability, short radius for turning and equipped with 2 hp hydraulic power pack, imported control panel, belt and various other user friendly features adds up its efficiency quotient.",
+        image: "/material/bag-stacker.jpg"
+      }
+    ]
   },
   {
     id: "jaw-crusher",
@@ -400,28 +492,42 @@ export const products: Product[] = [
       { title: "Reversible Plates", description: "Double-sided jaw plates extend service life", icon: "refresh" },
       { title: "Easy Access", description: "Quick maintenance access points", icon: "wrench" }
     ],
-    applications: ["Mining", "Quarrying", "Construction", "Recycling", "Aggregate Production", "Road Building", "Concrete Production"],
-    industries: ["Mining", "Construction", "Quarrying", "Recycling", "Infrastructure"],
-    technicalSpecs: {
-      "Feed Size": "100-1200 mm",
-      "Output Size": "10-300 mm",
-      "Capacity": "1-500 TPH",
-      "Motor Power": "7.5-200 HP",
-      "Jaw Material": "Mn13 Steel",
-      "Weight Range": "1-50 tons"
+    applications: [
+      "Gravel",
+      "Blast Furnace Slag",
+      "Quartz",
+      "Feldspar",
+      "Iron Ore",
+      "Coal & Coke",
+      "Stone",
+      "Lime Stone",
+      "Dolomite",
+      "Ferro Alloys",
+      "Bauxite",
+      "Granite",
+      "Barytes",
+      "Betonies",
+      "Magnesite",
+      "Rock Phosphate",
+      "Soap Stone"
+    ],
+    industries: ["Mining", "Construction", "Quarrying", "Recycling", "Infrastructure", "Roads building"],
+    performanceNote: "With larger Jaw settings, corresponding higher capacities are obtained. Dimension and data given above are subject to change without notice.",
+    performanceTable: {
+      headers: ["Model", "Size Of Machine", "Max Feed Size", "Jaw Setting", "Capacity (MT/hr)", "Motor required", "Space requirement"],
+      rows: [
+        { parameter: "C 127", values: ["300mm x 175mm (12\" x 7\")", "140mm", "13 / 25 / 62 mm", "6 / 9 / 25", "20 HP", "1.36 M x 1 M x 1.18 M height"] },
+        { parameter: "C 169", values: ["400mm x 225mm (16\" x 9\")", "180mm", "13 / 25 / 62 mm", "8 / 13 / 31", "25 HP", "1.56 M x 1.1 M x 1.33 M height"] },
+        { parameter: "C 2213", values: ["558mm x 330mm", "250mm", "13 / 25 / 62 mm", "10 / 16 / 40", "40 HP", "1.7 M x 2.6 M x 1.9 M height"] }
+      ]
     },
-    performanceData: [
-      { material: "Granite", fineness: "40mm discharge", outputRange: "50-150 TPH" },
-      { material: "Limestone", fineness: "50mm discharge", outputRange: "80-200 TPH" },
-      { material: "Basalt", fineness: "60mm discharge", outputRange: "60-180 TPH" }
-    ],
+    performanceData: [],
     variants: [
-      { model: "TJC-1510", capacity: "1-10 TPH", power: "7.5-15 HP", description: "Small-scale crushing operations" },
-      { model: "TJC-2515", capacity: "10-50 TPH", power: "20-40 HP", description: "Medium crushing requirements" },
-      { model: "TJC-3624", capacity: "50-150 TPH", power: "50-100 HP", description: "Large quarry operations" },
-      { model: "TJC-4830", capacity: "150-500 TPH", power: "125-200 HP", description: "Heavy-duty mining applications" }
+      { model: "C 127", capacity: "6-25 TPH", power: "20 HP", description: "Compact jaw crusher for small to medium crushing operations." },
+      { model: "C 169", capacity: "8-31 TPH", power: "25 HP", description: "Versatile jaw crusher for various industrial applications." },
+      { model: "C 2213", capacity: "10-40 TPH", power: "40 HP", description: "High-capacity jaw crusher for heavy-duty requirements." }
     ],
-    relatedClients: ["L&T", "Afcons Infrastructure", "NCC Limited", "KEC International"],
+    relatedClients: ["ECOF", "Kanoria C", "SP Group", "TVS"],
     image: "/products/P-06_tyco-india-jaw-crusher.jpg"
   },
   {
@@ -444,27 +550,53 @@ export const products: Product[] = [
     ],
     applications: ["Feeding Systems", "Dosing Applications", "Process Control", "Batching Systems", "Packaging Lines", "Foundry", "Glass Industry"],
     industries: ["Manufacturing", "Foundry", "Glass", "Pharmaceuticals", "Food Processing"],
-    technicalSpecs: {
-      "Feed Rate": "0.1-50 TPH",
-      "Tray Width": "150-1200 mm",
-      "Tray Length": "300-2000 mm",
-      "Amplitude": "0-3 mm adjustable",
-      "Control": "0-100% variable",
-      "Power": "0.1-3 kW"
+    technicalSpecsTable: {
+      headers: ["Model", "Vibrations / min", "Max Input (Amps)", "Supply (50 cycles, A.C.)", "Net Weight - Vibrator", "Net Weight - Controller"],
+      rows: [
+        { parameter: "T 5", values: ["3000", "2.6", "220/240 volts", "25 Kgs", "15 Kgs"] },
+        { parameter: "T 7", values: ["3000", "3.0", "400/440 volts", "76 Kgs", "15 Kgs"] },
+        { parameter: "T 20", values: ["3000", "7.0", "400/440 volts", "127 Kgs", "15 Kgs"] }
+      ]
     },
-    performanceData: [
-      { material: "Fine Powders", fineness: "Small tray", outputRange: "0.1-1 TPH" },
-      { material: "Granules", fineness: "Medium tray", outputRange: "1-10 TPH" },
-      { material: "Coarse Materials", fineness: "Large tray", outputRange: "10-50 TPH" }
-    ],
+    performanceData: [],
     variants: [
-      { model: "TEV-150", capacity: "0.1-2 TPH", power: "0.1-0.3 kW", description: "Small-scale precision feeding" },
-      { model: "TEV-300", capacity: "1-5 TPH", power: "0.3-0.5 kW", description: "Medium-capacity feeding" },
-      { model: "TEV-600", capacity: "5-20 TPH", power: "0.5-1 kW", description: "High-volume feeding" },
-      { model: "TEV-1200", capacity: "20-50 TPH", power: "1-3 kW", description: "Heavy-duty industrial feeding" }
+      { model: "T 5", capacity: "0.1-2 TPH", power: "0.3 kW", description: "Small-scale precision feeding with 220/240V supply." },
+      { model: "T 7", capacity: "1-10 TPH", power: "0.5 kW", description: "Medium-capacity feeding with 400/440V supply." },
+      { model: "T 20", capacity: "10-50 TPH", power: "1.5 kW", description: "High-volume industrial feeding with 400/440V supply." }
     ],
-    relatedClients: ["Saint-Gobain", "Asahi India Glass", "Hindalco", "Vedanta"],
+    relatedClients: ["Grasim", "ACB India Ltd"],
     image: "/products/P-07_tyco-india-electromagnetic-vibrator.jpg"
+  },
+  {
+    id: "packaging-equipment",
+    category: "packaging",
+    name: "Packaging Equipment",
+    model: "TPE Series",
+    tagline: "Secondary Packaging Automation",
+    shortSummary: "Bulk packaging and aggregation of small pouches into large woven bags.",
+    description: "Advanced secondary packaging automation for aggregating small pouches into bulk bags, designed to enhance productivity and reduce manual handling.",
+    overview: "Our Packaging Equipment specializes in secondary packaging automation. It is specifically designed for the bulk packaging and aggregation of small pouches into large woven bags. This system streamlines logistics and significantly increases productivity by shifting menial, repetitive tasks to automated processes.",
+    specs: ["Pouach Aggregation", "Manpower Reduction", "FMCG Optimized"],
+    features: [
+      { title: "Secondary Automation", description: "Seamless aggregation of small pouches into bulk units", icon: "package" },
+      { title: "Productivity Boost", description: "Automation of menial tasks leading to higher throughput", icon: "trending-up" },
+      { title: "Manpower Efficiency", description: "Reduces need for manual repetitive labor", icon: "users" },
+      { title: "Versatile Applications", description: "Ideal for sugar, salt, pulses, rice, and besan", icon: "check-circle" }
+    ],
+    applications: ["Sugar Packaging", "Salt Packaging", "Pulses & Rice", "Besan aggregation", "FMCG Bulk Handling"],
+    industries: ["FMCG Industry", "Food Processing", "Warehousing", "Logistics"],
+    technicalSpecs: {
+      "Primary Advantage": "Automation helps in reduction of manpower and shifting of menial, repetitive tasks leading to increase in productivity.",
+      "Package Type": "Secondary / Bulk Packaging",
+      "Aggregation": "Small pouches into large woven bags",
+      "Industry Focus": "FMCG (All kind of food products)"
+    },
+    performanceData: [],
+    variants: [
+      { model: "TPE-SA", description: "Secondary Packaging Aggregator for FMCG pouches." }
+    ],
+    relatedClients: ["Adani Wilmar", "Tata Consumer Products", "Dawat Rice", "Fortune Foods"],
+    image: "/newproduct.jpeg"
   }
 ]
 

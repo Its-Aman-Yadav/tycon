@@ -18,6 +18,7 @@ const navigation = [
       { name: "Automatic Weighing & Bagging Machine", href: "/products/automatic-weighing-bagging-machine" },
       { name: "Air Classifier", href: "/products/air-classifier" },
       { name: "Material Handling Equipments", href: "/products/material-handling-equipments" },
+      { name: "Packaging Equipment", href: "/products/packaging-equipment" },
       { name: "Jaw Crusher", href: "/products/jaw-crusher" },
       { name: "Electromagnetic Vibrator", href: "/products/electromagnetic-vibrator" },
     ]
@@ -82,16 +83,18 @@ export function Header() {
               </Link>
               
               {item.submenu && activeSubmenu === item.name && (
-                <div className="absolute top-full left-0 mt-2 w-72 rounded-md bg-card border border-border shadow-lg py-2 animate-in fade-in-10 slide-in-from-top-2">
-                  {item.submenu.map((subItem) => (
-                    <Link
-                      key={subItem.name}
-                      href={subItem.href}
-                      className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-                    >
-                      {subItem.name}
-                    </Link>
-                  ))}
+                <div className="absolute top-full left-0 pt-2 w-72 animate-in fade-in-10 slide-in-from-top-2">
+                  <div className="rounded-md bg-card border border-border shadow-lg py-2">
+                    {item.submenu.map((subItem) => (
+                      <Link
+                        key={subItem.name}
+                        href={subItem.href}
+                        className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                      >
+                        {subItem.name}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -100,7 +103,7 @@ export function Header() {
 
         {/* CTA Button */}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
+          <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300">
             <Link href="/enquiry">Send Enquiry</Link>
           </Button>
         </div>
@@ -136,7 +139,7 @@ export function Header() {
               </div>
             ))}
             <div className="pt-4">
-              <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300">
                 <Link href="/enquiry">Send Enquiry</Link>
               </Button>
             </div>

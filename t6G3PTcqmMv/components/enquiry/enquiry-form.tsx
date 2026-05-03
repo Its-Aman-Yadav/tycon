@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { motion } from "framer-motion"
 import { Send, CheckCircle, Download } from "lucide-react"
+import { sendEnquiry } from "@/app/enquiry/actions"
+import { toast } from "sonner"
 
 const products = [
   { value: "", label: "Select a product" },
@@ -14,6 +16,7 @@ const products = [
   { value: "automatic-weighing-bagging-machine", label: "Automatic Weighing & Bagging Machine" },
   { value: "air-classifier", label: "Air Classifier" },
   { value: "material-handling-equipments", label: "Material Handling Equipments" },
+  { value: "packaging-equipment", label: "Packaging Equipment" },
   { value: "jaw-crusher", label: "Jaw Crusher" },
   { value: "electromagnetic-vibrator", label: "Electromagnetic Vibrator" },
   { value: "other", label: "Other / Multiple Products" },
@@ -80,11 +83,24 @@ export function EnquiryForm() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    const formData = new FormData(e.currentTarget)
+    // Add the checkbox value explicitly since FormData might handle it differently
+    formData.set('requestBrochure', requestBrochure.toString())
+
+    try {
+      const result = await sendEnquiry(formData)
+      
+      if (result.success) {
+        setIsSubmitted(true)
+        toast.success("Enquiry sent successfully!")
+      } else {
+        toast.error(result.error || "Something went wrong")
+      }
+    } catch (error) {
+      toast.error("Failed to connect to the server")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isSubmitted) {
@@ -301,7 +317,7 @@ export function EnquiryForm() {
             type="submit"
             size="lg"
             disabled={isSubmitting}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">

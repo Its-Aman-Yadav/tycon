@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 const inter = Inter({ 
@@ -14,9 +15,12 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'TYCO India | Industrial Machinery Manufacturing Since 1977',
+  title: 'Tyco India Pvt Ltd',
   description: 'TYCO India - Leading manufacturer of industrial machinery including sheet metal equipment, tube processing machines, and automation solutions. Trusted by global industries since 1977.',
   keywords: ['industrial machinery', 'sheet metal equipment', 'tube processing', 'manufacturing', 'India', 'export'],
+  icons: {
+    icon: '/tyco.png',
+  },
 }
 
 export const viewport: Viewport = {
@@ -32,6 +36,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased bg-background text-foreground`}>
         {children}
+        <Toaster position="top-right" richColors />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

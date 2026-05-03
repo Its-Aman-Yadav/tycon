@@ -1,8 +1,6 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClientsHero } from "@/components/clients/clients-hero"
 import { ClientsFilterGrid } from "@/components/clients/clients-filter-grid"
-import { ClientsCTA } from "@/components/clients/clients-cta"
 
 export const metadata = {
   title: "Our Clients | TYCO India",
@@ -13,9 +11,9 @@ export default function ClientsPage() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      <ClientsHero />
-      <ClientsFilterGrid />
-      <ClientsCTA />
+      <div className="pt-24 lg:pt-32">
+        <ClientsFilterGrid />
+      </div>
       <Footer />
     </main>
   )

@@ -39,7 +39,8 @@ import {
   VolumeX,
   Clock,
   Building2,
-  ChevronDown
+  ChevronDown,
+  Square
 } from "lucide-react"
 import {
   DropdownMenu,
@@ -47,6 +48,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { sendEnquiry } from "@/app/enquiry/actions"
+import { toast } from "sonner"
 import type { Product } from "@/lib/products-data"
 import { clients } from "@/lib/products-data"
 import { RelatedProducts } from "./related-products"
@@ -169,7 +172,7 @@ export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
 
               {/* CTA Buttons */}
               <div className="mt-8 flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300">
                   <Link href={`/enquiry?product=${product.id}`} className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
                     Send Enquiry
@@ -323,6 +326,224 @@ export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
         </div>
       </section>
 
+      {/* Section 4.5: Technical Specifications & Performance */}
+      {(product.technicalSpecsTable || product.technicalSpecs || product.performanceData.length > 0 || product.performanceTable) && (
+        <section className="py-16 lg:py-24 bg-background">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+              {/* Technical Specifications */}
+              {(product.technicalSpecsTable || product.technicalSpecs) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <span className="text-primary text-sm font-medium tracking-wider uppercase">Specifications</span>
+                  <h2 className="mt-2 text-2xl md:text-3xl font-bold text-foreground font-display mb-8">
+                    Technical Specifications
+                  </h2>
+
+                  {product.technicalSpecsTable ? (
+                    <div className="overflow-x-auto rounded-xl border border-border">
+                      <table className="w-full text-sm text-left">
+                        <thead className="text-xs text-foreground uppercase bg-muted/50">
+                          <tr>
+                            {product.technicalSpecsTable.headers.map((header) => (
+                              <th key={header} className="px-4 py-3 font-semibold">{header}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-border">
+                          {product.technicalSpecsTable.rows.map((row, idx) => (
+                            <tr key={idx} className="bg-card hover:bg-muted/30 transition-colors">
+                              <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">{row.parameter}</td>
+                              {row.values.map((val, vIdx) => (
+                                <td key={vIdx} className="px-4 py-3 text-muted-foreground whitespace-nowrap">{val}</td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : product.technicalSpecs ? (
+                    <div className="rounded-xl border border-border overflow-hidden">
+                      <div className="bg-muted/50 px-4 py-3 border-b border-border">
+                        <div className="grid grid-cols-2 gap-4">
+                          <span className="text-xs font-semibold uppercase text-foreground">Item</span>
+                          <span className="text-xs font-semibold uppercase text-foreground">Specification</span>
+                        </div>
+                      </div>
+                      <div className="divide-y divide-border">
+                        {Object.entries(product.technicalSpecs).map(([key, value]) => (
+                          <div key={key} className="grid grid-cols-2 gap-4 px-4 py-3 bg-card hover:bg-muted/30 transition-colors">
+                            <span className="text-sm font-medium text-foreground">{key}</span>
+                            <span className="text-sm text-muted-foreground">{value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                </motion.div>
+              )}
+
+              {/* Performance Data */}
+              {(product.performanceData.length > 0 || product.performanceTable) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className={(product.technicalSpecsTable || product.technicalSpecs) ? "lg:col-span-1" : "lg:col-span-2"}
+                >
+                  <span className="text-primary text-sm font-medium tracking-wider uppercase">Performance</span>
+                  <h2 className="mt-2 text-2xl md:text-3xl font-bold text-foreground font-display mb-6">
+                    Capacity & Output
+                  </h2>
+
+                  {product.performanceNote && (
+                    <p className="mb-6 text-sm text-muted-foreground leading-relaxed">
+                      {product.performanceNote}
+                    </p>
+                  )}
+
+                  <div className="rounded-xl border border-border overflow-hidden overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                      <thead className="text-xs text-foreground uppercase bg-muted/50 border-b border-border">
+                        <tr>
+                          {product.performanceTable ? (
+                            product.performanceTable.headers.map((header) => (
+                              <th key={header} className="px-4 py-3 font-bold whitespace-nowrap">{header}</th>
+                            ))
+                          ) : (
+                            <>
+                              <th className="px-4 py-3 font-bold">Material for Grinding</th>
+                              <th className="px-4 py-3 font-bold">Capacity (KG/hr)</th>
+                            </>
+                          )}
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                        {product.performanceTable ? (
+                          product.performanceTable.rows.map((row, idx) => (
+                            <tr key={idx} className="bg-card hover:bg-muted/30 transition-colors">
+                              <td className="px-4 py-3 text-sm font-medium text-foreground whitespace-nowrap">{row.parameter}</td>
+                              {row.values.map((val, vIdx) => (
+                                <td key={vIdx} className="px-4 py-3 text-sm text-muted-foreground">{val}</td>
+                              ))}
+                            </tr>
+                          ))
+                        ) : (
+                          product.performanceData.map((data, idx) => (
+                            <tr key={idx} className="bg-card hover:bg-muted/30 transition-colors">
+                              <td className="px-4 py-3 text-sm font-medium text-foreground">{data.material}</td>
+                              <td className="px-4 py-3 text-sm text-muted-foreground">{data.outputRange}</td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  {!product.performanceNote && (
+                    <p className="mt-4 text-xs text-muted-foreground italic">
+                      * Output capacity is approximate and depends on feed size, moisture content, and desired fineness.
+                    </p>
+                  )}
+                </motion.div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+
+      {/* Section 4.6: Additional Technical Details (Legacy Image Format) */}
+      {product.additionalRequirements && product.additionalRequirements.length > 0 && (
+        <section className="py-16 lg:py-24 bg-muted/30">
+          <div className="mx-auto max-w-4xl px-6 lg:px-8">
+            <div className="space-y-10">
+              {product.additionalRequirements.map((req, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                >
+                  <h3 className={`text-xl font-display text-foreground leading-tight ${req.items.length === 0 ? "text-lg font-normal text-muted-foreground italic" : "font-bold"}`}>
+                    {req.title}
+                  </h3>
+                  {req.items.length > 0 && (
+                    <ul className="mt-6 space-y-3">
+                      {req.items.map((item, iIdx) => (
+                        <li key={iIdx} className="flex gap-4 text-base text-muted-foreground leading-relaxed">
+                          <Square className="mt-1.5 w-3.5 h-3.5 fill-orange-500 text-orange-500 shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Section 4.7: Product Gallery / Detailed Variants */}
+      {product.productGallery && product.productGallery.length > 0 && (
+        <section className="py-16 lg:py-24 bg-card">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <span className="text-primary text-sm font-medium tracking-wider uppercase">Gallery</span>
+              <h2 className="mt-2 text-2xl md:text-3xl font-bold text-foreground font-display">
+                Detailed Product Range
+              </h2>
+            </div>
+
+            <div className="space-y-20">
+              {product.productGallery.map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}
+                >
+                  <div className="w-full lg:w-1/2">
+                    <div className="aspect-[4/3] rounded-2xl bg-white border border-border overflow-hidden shadow-md relative group">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full lg:w-1/2">
+                    <h3 className="text-2xl font-bold text-foreground font-display mb-6">{item.title}</h3>
+                    <div className="space-y-4">
+                      {item.description.split('\n\n').map((paragraph, pIdx) => (
+                        <p key={pIdx} className="text-muted-foreground leading-relaxed">
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                    <Button asChild variant="outline" className="mt-8 border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 dark:hover:bg-primary">
+                      <Link href={`/enquiry?product=${product.id}&model=${item.title}`}>
+                        Enquire about {item.title}
+                      </Link>
+                    </Button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Section 5: Custom Solutions */}
       <section className="py-16 lg:py-24 bg-background border-y border-border">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -349,18 +570,27 @@ export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
             <span className="text-primary text-sm font-medium tracking-wider uppercase">Trusted By</span>
             <h2 className="mt-2 text-2xl font-bold text-foreground font-display">Our Valued Clients</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-60">
-            {clients.slice(0, 6).map((client) => (
-              <div key={client.name} className="flex justify-center grayscale hover:grayscale-0 transition-all duration-300">
-                <Image
-                  src={client.logo}
-                  alt={client.name}
-                  width={120}
-                  height={60}
-                  className="h-12 w-auto object-contain"
-                />
-              </div>
-            ))}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+            {clients
+              .filter((client) => client.products.includes(product.id))
+              .slice(0, 12)
+              .map((client) => (
+                <div key={client.name} className="flex justify-center items-center transition-all duration-300">
+                  {client.logo ? (
+                    <Image
+                      src={client.logo}
+                      alt={client.name}
+                      width={120}
+                      height={60}
+                      className="h-12 w-auto object-contain"
+                    />
+                  ) : (
+                    <span className="text-sm font-semibold text-muted-foreground text-center">
+                      {client.name}
+                    </span>
+                  )}
+                </div>
+              ))}
           </div>
         </div>
       </section>
@@ -376,6 +606,8 @@ export function ProductDetailTemplate({ product }: ProductDetailTemplateProps) {
 
 // Inline Enquiry Form Component
 function ProductEnquiryForm({ product }: { product: Product }) {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     company: "",
@@ -392,10 +624,49 @@ function ProductEnquiryForm({ product }: { product: Product }) {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted:", formData)
+    setIsSubmitting(true)
+
+    const form = e.currentTarget as HTMLFormElement
+    const formData = new FormData(form)
+
+    try {
+      const result = await sendEnquiry(formData)
+      if (result.success) {
+        setIsSubmitted(true)
+        toast.success("Enquiry sent successfully!")
+      } else {
+        toast.error(result.error || "Failed to send enquiry")
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  if (isSubmitted) {
+    return (
+      <section className="py-16 lg:py-24 bg-card">
+        <div className="mx-auto max-w-2xl px-6 lg:px-8 text-center">
+          <div className="w-16 h-16 mx-auto rounded-full bg-green-500/10 flex items-center justify-center mb-6">
+            <CheckCircle className="w-8 h-8 text-green-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-foreground font-display">Thank You!</h2>
+          <p className="mt-4 text-muted-foreground">
+            Your enquiry for {product.name} has been submitted successfully. Our team will contact you within 24 hours.
+          </p>
+          <Button
+            onClick={() => setIsSubmitted(false)}
+            variant="outline"
+            className="mt-8"
+          >
+            Send Another Enquiry
+          </Button>
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -589,9 +860,26 @@ function ProductEnquiryForm({ product }: { product: Product }) {
             <p className="text-xs text-muted-foreground">
               By submitting this form, you agree to be contacted by TYCO India regarding your enquiry.
             </p>
-            <Button type="submit" size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto">
-              <Mail className="w-4 h-4 mr-2" />
-              Submit Enquiry
+            <Button 
+              type="submit" 
+              size="lg" 
+              disabled={isSubmitting}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto transition-all duration-300"
+            >
+              {isSubmitting ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Mail className="w-4 h-4 mr-2" />
+                  Submit Enquiry
+                </>
+              )}
             </Button>
           </div>
         </motion.form>

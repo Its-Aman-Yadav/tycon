@@ -20,6 +20,7 @@ const carouselItems = [
   { src: "/products/carousel/P-05_tyco-india-material-handling-equipments.jpg", alt: "Material Handling Equipment" },
   { src: "/products/carousel/P-06_tyco-india-jaw-crusher.jpg", alt: "Jaw Crusher" },
   { src: "/products/carousel/P-07_tyco-india-electromagnetic-vibrator.jpg", alt: "Electromagnetic Vibrator" },
+  { src: "/newproduct.jpeg", alt: "Packaging Equipment" },
 ]
 
 export function HeroCarousel() {

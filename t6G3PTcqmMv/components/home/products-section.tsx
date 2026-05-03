@@ -68,6 +68,14 @@ const products = [
     href: "/products/electromagnetic-vibrator",
     image: "/products/P-07_tyco-india-electromagnetic-vibrator.jpg",
   },
+  {
+    id: "packaging-equipment",
+    name: "Packaging Equipment",
+    summary: "Bulk packaging and aggregation of small pouches into large woven bags for FMCG automation.",
+    applications: ["Sugar", "Salt", "Pulses", "Rice"],
+    href: "/products/packaging-equipment",
+    image: "/newproduct.jpeg",
+  },
 ]
 
 export function ProductsSection() {
