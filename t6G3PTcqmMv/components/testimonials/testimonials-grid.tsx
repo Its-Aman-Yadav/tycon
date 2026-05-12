@@ -3,43 +3,68 @@
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
-import { Quote } from "lucide-react"
+import Image from "next/image"
 
 const testimonials = [
   {
-    quote: "We installed the Automatic Weighing and Bagging Machine for our fertilizer packing line. The consistency of bag weights has improved significantly, and the output rate meets our daily dispatch requirements reliably.",
-    customerName: "Operations Manager",
-    industry: "Fertilizer",
-    product: "Automatic Weighing & Bagging Machine",
-    productSlug: "automatic-weighing-bagging-machine",
+    image: "/testimonials/Testimonials_AssociatedEngineers.jpeg",
+    title: "Associated Engineers",
   },
   {
-    quote: "The Pulveriser handles our industrial grinding work without issues. We process hard materials daily, and the machine has maintained steady performance over the past three years with minimal downtime.",
-    customerName: "Plant Supervisor",
-    industry: "Chemicals",
-    product: "Pulveriser",
-    productSlug: "pulveriser",
+    image: "/testimonials/Testimonials_Basundharapaddy.jpeg",
+    title: "Basundhara Paddy",
   },
   {
-    quote: "For our spice processing unit, the Spices Pulverizer was the right choice. It preserves the aroma and colour of our products, which is critical for customer acceptance. The build quality is solid.",
-    customerName: "Production Head",
-    industry: "Food Processing",
-    product: "Spices Pulverizer",
-    productSlug: "spices-pulverizer",
+    image: "/testimonials/Testimonials_BharatAgro.jpeg",
+    title: "Bharat Agro",
   },
   {
-    quote: "We use the Air Classifier to achieve consistent fineness in our powder output. The separation efficiency has helped us meet product specifications without repeated rework.",
-    customerName: "Quality Control Manager",
-    industry: "Minerals Processing",
-    product: "Air Classifier",
-    productSlug: "air-classifier",
+    image: "/testimonials/Testimonials_Bheemasamusheer.jpeg",
+    title: "Bheema Samusheer",
   },
   {
-    quote: "The Material Handling system TYCO supplied for our plant has streamlined our internal logistics. Conveyors, elevators, and feeders work well together, reducing manual handling and improving overall efficiency.",
-    customerName: "Maintenance Engineer",
-    industry: "Steel Processing",
-    product: "Material Handling Equipments",
-    productSlug: "material-handling-equipments",
+    image: "/testimonials/Testimonials_Brahmaputrametallics.jpeg",
+    title: "Brahmaputra Metallics",
+  },
+  {
+    image: "/testimonials/Testimonials_JharkhandGrind.jpeg",
+    title: "Jharkhand Grind",
+  },
+  {
+    image: "/testimonials/Testimonials_Katariyaagro.jpeg",
+    title: "Katariya Agro",
+  },
+  {
+    image: "/testimonials/Testimonials_KisanveerSatara.jpeg",
+    title: "Kisan Veer Satara",
+  },
+  {
+    image: "/testimonials/Testimonials_MaithanAlloys.jpeg",
+    title: "Maithan Alloys",
+  },
+  {
+    image: "/testimonials/Testimonials_MudremaneCoffee.jpeg",
+    title: "Mudremane Coffee",
+  },
+  {
+    image: "/testimonials/Testimonials_SAIL.jpeg",
+    title: "SAIL",
+  },
+  {
+    image: "/testimonials/Testimonials_Sahakarimills.jpeg",
+    title: "Sahakari Mills",
+  },
+  {
+    image: "/testimonials/Testimonials_SpectraIndia.jpeg",
+    title: "Spectra India",
+  },
+  {
+    image: "/testimonials/Testimonials_TirumalaCottons.jpeg",
+    title: "Tirumala Cottons",
+  },
+  {
+    image: "/testimonials/Testimonials_Vikrampvtltd.jpeg",
+    title: "Vikram Pvt Ltd",
   },
 ]
 
@@ -50,34 +75,32 @@ export function TestimonialsGrid() {
   return (
     <section ref={ref} className="py-24 lg:py-32 bg-background">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
-              key={testimonial.product}
+              key={testimonial.title}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
               className="group"
             >
-              <div className="h-full p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-all duration-300 flex flex-col">
-                <Quote className="w-8 h-8 text-primary/30 mb-4 flex-shrink-0" />
+              <div className="h-full p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-all duration-300 flex flex-col shadow-sm hover:shadow-md">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-muted mb-4">
+                  <Image
+                    src={testimonial.image}
+                    alt={`${testimonial.title} Certificate`}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
 
-                <blockquote className="text-foreground leading-relaxed mb-6 flex-grow">
-                  &quot;{testimonial.quote}&quot;
-                </blockquote>
-
-                <div className="pt-4 border-t border-border space-y-3">
-                  <div>
-                    <div className="font-medium text-foreground">{testimonial.customerName}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.industry}</div>
+                <div className="mt-auto pt-4 border-t border-border">
+                  <div className="font-semibold text-foreground text-center">
+                    {testimonial.title}
                   </div>
-                  
-                  <a 
-                    href={`/products/${testimonial.productSlug}`}
-                    className="inline-block px-3 py-1.5 text-xs font-medium rounded-full bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
-                  >
-                    {testimonial.product}
-                  </a>
+                  <div className="text-xs text-muted-foreground text-center mt-1">
+                    Client Testimonial Certificate
+                  </div>
                 </div>
               </div>
             </motion.div>

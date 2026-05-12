@@ -87,41 +87,41 @@ export interface Client {
 }
 
 export const clients: Client[] = [
-  { id: 4, name: "Tata Steel", logo: "/clients/Tata%20Steel%20Logo.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 6, name: "SAIL", logo: "/clients/Sail%20Logio.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 7, name: "Jindal Steel", logo: "/clients/Jindal_Steel_Limited_Logo.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 8, name: "Dabur India", logo: "/clients/Dabur%20logo.png", products: ["pulveriser"] },
-  { id: 9, name: "Hindustan Unilever", logo: "/clients/Hindustan_Unilever_Logo%201.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 10, name: "Aarti Industries", logo: "/clients/Arti%20logo.png", products: ["pulveriser"] },
+  { id: 4, name: "Tata Steel", logo: "/FinalLogo/Tatasteel.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 6, name: "SAIL", logo: "/FinalLogo/Sail.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 7, name: "Jindal Steel", logo: "/FinalLogo/Jindalsteel.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 8, name: "Dabur India", logo: "/FinalLogo/Dabur.png", products: ["pulveriser"] },
+  { id: 9, name: "Hindustan Unilever", logo: "/FinalLogo/HUL.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 10, name: "Aarti Industries", logo: "/FinalLogo/Arti.png", products: ["pulveriser"] },
   { id: 12, name: "Himalaya Wellness", logo: "/clients/Himalaya%20logo.png", products: ["pulveriser"] },
   { id: 13, name: "HIL Limited", logo: "/clients/HIL%20Limited%20logo.jfif", products: ["pulveriser"] },
-  { id: 14, name: "AWL Agri Business", logo: "/clients/AWL_Agri_Business_Logo_COLOUR_RGB-2.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 15, name: "Arya Vaidya Pharmacy", logo: "/clients/AVP%20logo.jfif", products: ["pulveriser"] },
-  { id: 16, name: "Kores India", logo: "/clients/Kores%20Logo.jfif", products: ["air-classifier"] },
-  { id: 17, name: "Usha Martin", logo: "/clients/Usha%20Martin%20Logo.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 18, name: "RHI Magnesita", logo: "/clients/RHI%20Magnesita%20Logo.png", products: ["pulveriser", "air-classifier"] },
-  { id: 21, name: "Kisanveer Satara", logo: "/clients/Kisanveer%20Satara%20SSKL.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 22, name: "Maithan Ceramic", logo: "/clients/Maithan%20Ceramic%20Ltd.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 23, name: "Natural Remedies", logo: "/clients/Natural%20remedies%20logo.jfif", products: ["pulveriser"] },
-  { id: 24, name: "Oushadhi", logo: "/clients/Oushadhi%20logo.jfif", products: ["pulveriser"] },
-  { id: 25, name: "TRL Krosaki", logo: "/clients/trl_krosaki_refractories_limited%20logo.jfif", products: ["air-classifier"] },
-  { id: 26, name: "Shilpa Steel", logo: "/clients/Shilpa%20Steel%20Logo.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 27, name: "Welspun", logo: "/clients/Welspun_Energy_Logo.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 28, name: "Sanghvi Food", logo: "/clients/Sanghvi%20food%20logo.webp", products: ["pulveriser"] },
-  { id: 29, name: "Zenex (Ayurvet)", logo: "/clients/Zenex%20Logo%20(Ayurvet%20Ltd).png", products: ["pulveriser"] },
-  { id: 30, name: "Adhunik Group", logo: "/clients/adhuniklogo.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 31, name: "Hira Group", logo: "/clients/hira-logo.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 32, name: "Parakh Agro", logo: "/clients/parakh-agro%20logo.png", products: ["pulveriser"] },
-  { id: 33, name: "KCI", logo: "/clients/kci-logo.png", products: ["pulveriser"] },
-  { id: 34, name: "ECOF", logo: "/clients/ecof-logo.png", products: ["jaw-crusher"] },
-  { id: 35, name: "Rashmi Group", logo: "/clients/Rashmi%20Grp%20Logo.png", products: ["automatic-weighing-bagging-machine"] },
-  { id: 36, name: "Monnet Group", logo: "/clients/Monnet%20Grp%20logo.jpg", products: ["automatic-weighing-bagging-machine"] },
-  { id: 37, name: "Tamilnadu Magnesite", logo: "/clients/Tamilnadu%20magnesite%20logo.jfif", products: ["pulveriser"] },
-  { id: 38, name: "Arya Vaidya Sala", logo: "/clients/Arya%20Vaidya%20sala%20kottakkal.jfif", products: ["pulveriser"] },
-  { id: 39, name: "ACB India Ltd", logo: "/clients/ACB%20logo.jfif", products: ["electromagnetic-vibrator"] },
-  { id: 40, name: "Indian Herbs", logo: "/clients/Indian%20Herbs%20logo.jfif", products: ["pulveriser"] },
-  { id: 41, name: "Pan Brand", logo: "/clients/Pan%20brand%20logo.jfif", products: ["pulveriser"] },
-  { id: 42, name: "SP Group", logo: "/clients/SP%20Logo.png", products: ["jaw-crusher"] },
+  { id: 14, name: "AWL Agri Business", logo: "/FinalLogo/AWL.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 15, name: "Arya Vaidya Pharmacy", logo: "/FinalLogo/AVP.png", products: ["pulveriser"] },
+  { id: 16, name: "Kores India", logo: "/FinalLogo/Kores.png", products: ["air-classifier"] },
+  { id: 17, name: "Usha Martin", logo: "/FinalLogo/Ushamartin.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 18, name: "RHI Magnesita", logo: "/FinalLogo/RHIMagnesita.png", products: ["pulveriser", "air-classifier"] },
+  { id: 21, name: "Kisanveer Satara", logo: "/FinalLogo/Kisanveersatara.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 22, name: "Maithan Ceramic", logo: "/FinalLogo/Maithan.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 23, name: "Natural Remedies", logo: "/FinalLogo/Naturalremedies.png", products: ["pulveriser"] },
+  { id: 24, name: "Oushadhi", logo: "/FinalLogo/Oushadi.png", products: ["pulveriser"] },
+  { id: 25, name: "TRL Krosaki", logo: "/FinalLogo/TRLKrosaki.png", products: ["air-classifier"] },
+  { id: 26, name: "Shilpa Steel", logo: "/FinalLogo/Shilpasteelandpower.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 27, name: "Welspun", logo: "/FinalLogo/Wellspun.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 28, name: "Sanghvi Food", logo: "/FinalLogo/Sanghvigroup.png", products: ["pulveriser"] },
+  { id: 29, name: "Zenex (Ayurvet)", logo: "/FinalLogo/Zenex.png", products: ["pulveriser"] },
+  { id: 30, name: "Adhunik Group", logo: "/FinalLogo/Adhunik.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 31, name: "Hira Group", logo: "/FinalLogo/Hira.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 32, name: "Parakh Agro", logo: "/FinalLogo/Parekhagro.png", products: ["pulveriser"] },
+  { id: 33, name: "KCI", logo: "/FinalLogo/KCI.png", products: ["pulveriser"] },
+  { id: 34, name: "ECOF", logo: "/FinalLogo/ECOF.png", products: ["jaw-crusher"] },
+  { id: 35, name: "Rashmi Group", logo: "/FinalLogo/Rashmigroup.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 36, name: "Monnet Group", logo: "/FinalLogo/Monnet.png", products: ["automatic-weighing-bagging-machine"] },
+  { id: 37, name: "Tamilnadu Magnesite", logo: "/FinalLogo/Tanmag.png", products: ["pulveriser"] },
+  { id: 38, name: "Arya Vaidya Sala", logo: "/FinalLogo/Aryavaidyashalakottakal.png", products: ["pulveriser"] },
+  { id: 39, name: "ACB India Ltd", logo: "/FinalLogo/ACB.png", products: ["electromagnetic-vibrator"] },
+  { id: 40, name: "Indian Herbs", logo: "/FinalLogo/Indianherbs.png", products: ["pulveriser"] },
+  { id: 41, name: "Pan Brand", logo: "/FinalLogo/Panbrand.png", products: ["pulveriser"] },
+  { id: 42, name: "SP Group", logo: "/FinalLogo/SPRefractories.png", products: ["jaw-crusher"] },
   { id: 43, name: "IOCL", logo: "", products: ["pulveriser", "air-classifier"] },
   { id: 44, name: "Hyderabad Industries Limited", logo: "/clients/HIL%20logo.jfif", products: ["pulveriser"] },
   { id: 45, name: "Lakshini Mineral Indus", logo: "", products: ["pulveriser"] },
@@ -138,7 +138,7 @@ export const clients: Client[] = [
   { id: 56, name: "Abhijeet", logo: "", products: ["automatic-weighing-bagging-machine"] },
   { id: 57, name: "Adani", logo: "", products: ["automatic-weighing-bagging-machine"] },
   { id: 58, name: "Bhushan", logo: "", products: ["automatic-weighing-bagging-machine"] },
-  { id: 59, name: "Graphite India Limited", logo: "", products: ["automatic-weighing-bagging-machine"] },
+  { id: 59, name: "Graphite India Limited", logo: "/FinalLogo/GraphiteIndia.png", products: ["automatic-weighing-bagging-machine"] },
   { id: 60, name: "Vine Engineers", logo: "", products: ["automatic-weighing-bagging-machine"] },
   { id: 61, name: "Visa Steel and Power Limited", logo: "", products: ["automatic-weighing-bagging-machine"] },
   { id: 62, name: "Vizag Refractories Private Limited", logo: "", products: ["automatic-weighing-bagging-machine"] },
@@ -149,7 +149,7 @@ export const clients: Client[] = [
   { id: 67, name: "Chemical Construction International", logo: "", products: ["automatic-weighing-bagging-machine"] },
   { id: 68, name: "Kanoria C", logo: "", products: ["jaw-crusher"] },
   { id: 69, name: "TVS", logo: "", products: ["jaw-crusher"] },
-  { id: 70, name: "Grasim", logo: "", products: ["electromagnetic-vibrator"] },
+  { id: 70, name: "Grasim", logo: "/FinalLogo/Grasim.png", products: ["electromagnetic-vibrator"] },
 ]
 
 export const products: Product[] = [
@@ -229,7 +229,7 @@ export const products: Product[] = [
       { model: "HP-40", diameter: "42\"", rotorRpm: "1570", hammers: 18, mainMotorHp: "75", description: "Heavy-duty pulveriser designed for maximum throughput." }
     ],
     relatedClients: ["Dabur India", "Himalaya Wellness", "IOCL", "RHI Magnesita", "Zenex (Ayurvet)", "ITC Limited"],
-    image: "/products/P-01_tyco-india-pulverizer.jpg"
+    image: "/finalproduct/Pulveriser_product.jpeg"
   },
   {
     id: "spices-pulverizer",
@@ -277,7 +277,7 @@ export const products: Product[] = [
       { model: "TSP-500", capacity: "500-1000 kg/hr", power: "40-50 HP", description: "Industrial spice grinding lines" }
     ],
     relatedClients: ["MDH Spices", "Everest Spices", "Catch Foods", "Eastern Condiments"],
-    image: "/products/P-02_tyco-india-spices-pulverizer.jpg"
+    image: "/finalproduct/Spicepulveriser_product.jpeg"
   },
   {
     id: "automatic-weighing-bagging-machine",
@@ -366,7 +366,7 @@ export const products: Product[] = [
       { model: "TAWB-AUTO", capacity: "Fully automatic line", power: "10 HP", description: "Complete packaging automation" }
     ],
     relatedClients: ["Tata Steel", "SAIL", "Jindal Steel", "Hindustan Unilever", "AWL Agri Business", "Usha Martin"],
-    image: "/products/P-03_tyco-india-weighing-bagging-machine.jpg"
+    image: "/finalproduct/Weighing%20&Bagging_product.jpeg"
   },
   {
     id: "air-classifier",
@@ -425,7 +425,7 @@ export const products: Product[] = [
       { model: "TAC-5000", capacity: "5000-10000 kg/hr", power: "100-150 kW", description: "Industrial-scale separation" }
     ],
     relatedClients: ["IOCL", "Kores India", "RHI Magnesita", "TRL Krosaki"],
-    image: "/products/P-04_tyco-india-air-classifiers.jpg"
+    image: "/finalproduct/Classifier_product.jpeg"
   },
   {
     id: "material-handling-equipments",
@@ -455,7 +455,7 @@ export const products: Product[] = [
       { model: "Bag stacker", description: "Most useful for stacking 50 kg bags with reduced manpower." }
     ],
     relatedClients: ["Ultratech Cement", "Shree Cement", "Dalmia Cement", "JK Cement"],
-    image: "/products/P-05_tyco-india-material-handling-equipments.jpg",
+    image: "/finalproduct/Materialhandling_product.jpeg",
     productGallery: [
       {
         title: "Inclined belt conveyor",
@@ -533,7 +533,7 @@ export const products: Product[] = [
       { model: "C 2213", capacity: "10-40 TPH", power: "40 HP", description: "High-capacity jaw crusher for heavy-duty requirements." }
     ],
     relatedClients: ["ECOF", "Kanoria C", "SP Group", "TVS"],
-    image: "/products/P-06_tyco-india-jaw-crusher.jpg"
+    image: "/finalproduct/Jawcrusher_product.jpeg"
   },
   {
     id: "electromagnetic-vibrator",
@@ -570,7 +570,7 @@ export const products: Product[] = [
       { model: "T 20", capacity: "10-50 TPH", power: "1.5 kW", description: "High-volume industrial feeding with 400/440V supply." }
     ],
     relatedClients: ["Grasim", "ACB India Ltd"],
-    image: "/products/P-07_tyco-india-electromagnetic-vibrator.jpg"
+    image: "/finalproduct/vibratorproduct1.jpeg"
   },
   {
     id: "packaging-equipment",
@@ -601,7 +601,7 @@ export const products: Product[] = [
       { model: "TPE-SA", description: "Secondary Packaging Aggregator for FMCG pouches." }
     ],
     relatedClients: ["Adani Wilmar", "Tata Consumer Products", "Dawat Rice", "Fortune Foods"],
-    image: "/newproduct.jpeg"
+    image: "/finalproduct/baginbag_product.jpeg"
   }
 ]
 

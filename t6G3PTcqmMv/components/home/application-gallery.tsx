@@ -7,12 +7,12 @@ import Image from "next/image"
 import { Image as ImageIcon } from "lucide-react"
 
 const applications = [
-  { title: "Spices Processing Line", category: "Food Processing", image: "/products/P-02_tyco-india-spices-pulverizer.jpg" },
-  { title: "Fertilizer Bagging System", category: "Fertilizer", image: "/products/P-03_tyco-india-weighing-bagging-machine.jpg" },
-  { title: "Mineral Grinding Unit", category: "Minerals", image: "/products/P-01_tyco-india-pulverizer.jpg" },
-  { title: "Chemical Processing", category: "Chemicals", image: "/products/P-04_tyco-india-air-classifiers.jpg" },
-  { title: "Primary Crushing Setup", category: "Mining", image: "/products/P-06_tyco-india-jaw-crusher.jpg" },
-  { title: "Warehouse Handling", category: "Material Handling", image: "/products/P-05_tyco-india-material-handling-equipments.jpg" },
+  { title: "Spices Processing Line", category: "Food Processing", image: "/finalproduct/Spicepulveriser_product.jpeg" },
+  { title: "Fertilizer Bagging System", category: "Fertilizer", image: "/finalproduct/Weighing%20&Bagging_product.jpeg" },
+  { title: "Mineral Grinding Unit", category: "Minerals", image: "/finalproduct/Pulveriser_product.jpeg" },
+  { title: "Chemical Processing", category: "Chemicals", image: "/finalproduct/Classifier_product.jpeg" },
+  { title: "Primary Crushing Setup", category: "Mining", image: "/finalproduct/Jawcrusher_product.jpeg" },
+  { title: "Warehouse Handling", category: "Material Handling", image: "/finalproduct/Materialhandling_product.jpeg" },
 ]
 
 export function ApplicationGallery() {

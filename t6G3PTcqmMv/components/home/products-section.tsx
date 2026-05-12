@@ -15,7 +15,7 @@ const products = [
     summary: "Industrial grinding system with flexible fineness control and dust-free operation.",
     applications: ["Chemicals", "Minerals", "Pharmaceuticals"],
     href: "/products/pulveriser",
-    image: "/products/P-01_tyco-india-pulverizer.jpg",
+    image: "/finalproduct/Pulveriser_product.jpeg",
     hasBrochure: true,
   },
   {
@@ -24,7 +24,7 @@ const products = [
     summary: "Two-stage spices grinding system for chilli, coriander, cumin, and similar materials.",
     applications: ["Spices", "Food Processing", "Masala"],
     href: "/products/spices-pulverizer",
-    image: "/products/P-02_tyco-india-spices-pulverizer.jpg",
+    image: "/finalproduct/Spicepulveriser_product.jpeg",
     hasBrochure: true,
   },
   {
@@ -33,7 +33,7 @@ const products = [
     summary: "Compact weighing and bagging solution for powdery, granular, and lumpy materials.",
     applications: ["Fertilizer", "Cement", "Chemicals"],
     href: "/products/automatic-weighing-bagging-machine",
-    image: "/products/P-03_tyco-india-weighing-bagging-machine.jpg",
+    image: "/finalproduct/Weighing%20&Bagging_product.jpeg",
     hasBrochure: true,
   },
   {
@@ -42,7 +42,7 @@ const products = [
     summary: "Centrifugal classifier for fine and coarse dry powdered materials with precise fineness control.",
     applications: ["Minerals", "Chemicals", "Pharmaceuticals"],
     href: "/products/air-classifier",
-    image: "/products/P-04_tyco-india-air-classifiers.jpg",
+    image: "/finalproduct/Classifier_product.jpeg",
   },
   {
     id: "material-handling-equipments",
@@ -50,7 +50,7 @@ const products = [
     summary: "Conveyor and handling systems for industrial bag movement and process-line support.",
     applications: ["Warehousing", "Processing", "Logistics"],
     href: "/products/material-handling-equipments",
-    image: "/products/P-05_tyco-india-material-handling-equipments.jpg",
+    image: "/finalproduct/Materialhandling_product.jpeg",
   },
   {
     id: "jaw-crusher",
@@ -58,7 +58,7 @@ const products = [
     summary: "Heavy-duty crushing equipment with rugged body and wear-resistant jaw plates.",
     applications: ["Mining", "Minerals", "Aggregates"],
     href: "/products/jaw-crusher",
-    image: "/products/P-06_tyco-india-jaw-crusher.jpg",
+    image: "/finalproduct/Jawcrusher_product.jpeg",
   },
   {
     id: "electromagnetic-vibrator",
@@ -66,7 +66,7 @@ const products = [
     summary: "System for maintaining free flow of stubborn materials from bins, hoppers, chutes, and pipes.",
     applications: ["Bulk Handling", "Process Industry", "Feeders"],
     href: "/products/electromagnetic-vibrator",
-    image: "/products/P-07_tyco-india-electromagnetic-vibrator.jpg",
+    image: "/finalproduct/vibratorproduct1.jpeg",
   },
   {
     id: "packaging-equipment",
@@ -74,7 +74,7 @@ const products = [
     summary: "Bulk packaging and aggregation of small pouches into large woven bags for FMCG automation.",
     applications: ["Sugar", "Salt", "Pulses", "Rice"],
     href: "/products/packaging-equipment",
-    image: "/newproduct.jpeg",
+    image: "/finalproduct/baginbag_product.jpeg",
   },
 ]
 

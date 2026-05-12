@@ -13,14 +13,13 @@ import {
 } from "@/components/ui/carousel"
 
 const carouselItems = [
-  { src: "/products/carousel/P-01_tyco-india-pulverizer.jpg", alt: "Industrial Pulverizer" },
-  { src: "/products/carousel/P-02_tyco-india-spices-pulverizer.jpg", alt: "Spices Pulverizer" },
-  { src: "/products/carousel/P-03_tyco-india-weighing-bagging-machine.jpg", alt: "Weighing & Bagging Machine" },
-  { src: "/products/carousel/P-04_tyco-india-air-classifiers.jpg", alt: "Air Classifier" },
-  { src: "/products/carousel/P-05_tyco-india-material-handling-equipments.jpg", alt: "Material Handling Equipment" },
-  { src: "/products/carousel/P-06_tyco-india-jaw-crusher.jpg", alt: "Jaw Crusher" },
-  { src: "/products/carousel/P-07_tyco-india-electromagnetic-vibrator.jpg", alt: "Electromagnetic Vibrator" },
-  { src: "/newproduct.jpeg", alt: "Packaging Equipment" },
+  { src: "/finalheroimage/Pulveriser1.jpeg", alt: "Industrial Pulverizer" },
+  { src: "/finalheroimage/W%26B1.jpeg", alt: "Weighing & Bagging Machine" },
+  { src: "/finalheroimage/Classifier1.jpeg", alt: "Air Classifier" },
+  { src: "/finalheroimage/Materialhandling1.jpeg", alt: "Material Handling Equipment" },
+  { src: "/finalheroimage/Jawcrusher1.jpeg", alt: "Jaw Crusher" },
+  { src: "/finalheroimage/Vibrator1.jpeg", alt: "Electromagnetic Vibrator" },
+  { src: "/finalheroimage/Baginbag1.jpeg", alt: "Packaging Equipment" },
 ]
 
 export function HeroCarousel() {

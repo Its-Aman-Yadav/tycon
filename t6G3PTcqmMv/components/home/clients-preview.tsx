@@ -9,21 +9,21 @@ import { useRef } from "react"
 import { ArrowRight, Building } from "lucide-react"
 
 const clientLogos = [
-  { name: "Tata Steel", logo: "/clients/Tata%20Steel%20Logo.png" },
-  { name: "Jindal Steel", logo: "/clients/Jindal_Steel_Limited_Logo.png" },
-  { name: "Dabur", logo: "/clients/Dabur%20logo.png" },
+  { name: "Tata Steel", logo: "/FinalLogo/Tatasteel.png" },
+  { name: "Jindal Steel", logo: "/FinalLogo/Jindalsteel.png" },
+  { name: "Dabur", logo: "/FinalLogo/Dabur.png" },
   { name: "Himalaya", logo: "/clients/Himalaya%20logo.png" },
-  { name: "Indian Herbs", logo: "/clients/Indian%20Herbs%20logo.jfif" },
-  { name: "Pan Brand", logo: "/clients/Pan%20brand%20logo.jfif" },
-  { name: "SP Group", logo: "/clients/SP%20Logo.png" },
-  { name: "Sail", logo: "/clients/Sail%20Logio.png" },
-  { name: "Usha Martin", logo: "/clients/Usha%20Martin%20Logo.png" },
-  { name: "Welspun Energy", logo: "/clients/Welspun_Energy_Logo.png" },
-  { name: "Arti", logo: "/clients/Arti%20logo.png" },
+  { name: "Indian Herbs", logo: "/FinalLogo/Indianherbs.png" },
+  { name: "Pan Brand", logo: "/FinalLogo/Panbrand.png" },
+  { name: "SP Group", logo: "/FinalLogo/SPRefractories.png" },
+  { name: "Sail", logo: "/FinalLogo/Sail.png" },
+  { name: "Usha Martin", logo: "/FinalLogo/Ushamartin.png" },
+  { name: "Welspun Energy", logo: "/FinalLogo/Wellspun.png" },
+  { name: "Arti", logo: "/FinalLogo/Arti.png" },
   { name: "HIL", logo: "/clients/HIL%20logo.jfif" },
-  { name: "ACB", logo: "/clients/ACB%20logo.jfif" },
-  { name: "AVP", logo: "/clients/AVP%20logo.jfif" },
-  { name: "Hira", logo: "/clients/hira-logo.png" },
+  { name: "ACB", logo: "/FinalLogo/ACB.png" },
+  { name: "AVP", logo: "/FinalLogo/AVP.png" },
+  { name: "Hira", logo: "/FinalLogo/Hira.png" },
 ]
 
 export function ClientsPreview() {

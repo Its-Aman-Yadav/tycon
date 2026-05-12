@@ -17,10 +17,10 @@ export function TestimonialsHero() {
         >
           <span className="text-primary text-sm font-medium tracking-wider uppercase">Testimonials</span>
           <h1 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold text-foreground font-display text-balance">
-            What Customers Value in TYCO
+            Client Appreciation & Certificates
           </h1>
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed text-pretty">
-            Feedback from industrial users across different machinery applications.
+            A collection of testimonials and certificates of appreciation from our valued industrial partners.
           </p>
         </motion.div>
       </div>
